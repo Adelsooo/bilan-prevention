@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+
 const C = {
   bg: "#F8F7F3", card: "#FFFFFF", navy: "#1A3A52", navyDark: "#0F2638",
   sage: "#5A8A6A", sageLight: "#EAF2EC", gold: "#C8922A", goldLight: "#FDF4E3",
@@ -845,16 +846,41 @@ export default function App() {
   const [sexe, setSexe] = useState("");
   const [submitData, setSubmitData] = useState(null);
 
-  const handleSubmit = (ans) => {
+  const handleSubmit = async (ans) => {
     const now = new Date();
     const dateStr = now.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
     const timeStr = now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
     const refNumber = generateRefNumber();
-    setSubmitData({
+
+    // Calcul des données dérivées (mêmes utilisées dans Results)
+    const tips = getPatientAdvice(identite.ageGroup, ans, sexe, identite.prenom);
+    const recos = getPharmacistReco(identite.ageGroup, ans, sexe);
+    const questionsLib = getQuestionsForSexe(identite.ageGroup, sexe);
+    const themes = [...new Set(questionsLib.map(q => q.theme))];
+    const priorityRecos = recos.filter(r => r.priority);
+
+    const payload = {
       ...identite, sexe, answers: ans, refNumber, dateStr, timeStr,
-    });
+      themes, recos, priorityRecos, tips, questionsLib,
+    };
+
+    setSubmitData(payload);
     setStep("sending");
-    setTimeout(() => setStep("results"), 2000);
+
+    // Envoi à l'API mail (non bloquant pour l'UX)
+    try {
+      const res = await fetch("/api/send-mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      console.log("Mail envoyé :", json);
+    } catch (err) {
+      console.error("Erreur envoi mail :", err);
+    }
+
+    setTimeout(() => setStep("results"), 1500);
   };
 
   return (
