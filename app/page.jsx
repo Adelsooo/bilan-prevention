@@ -1,5 +1,6 @@
-import { useState, useRef } from "react";
+"use client";
 
+import { useState, useRef } from "react";
 const C = {
   bg: "#F8F7F3", card: "#FFFFFF", navy: "#1A3A52", navyDark: "#0F2638",
   sage: "#5A8A6A", sageLight: "#EAF2EC", gold: "#C8922A", goldLight: "#FDF4E3",
