@@ -1,21 +1,20 @@
 import { Resend } from "resend";
 
-// ═══════════════════════════════════════════════════════════
-// Génération du PDF HTML — IDENTIQUE pour patient et pharmacien
-// 3 pages : Identité+Thèmes / Conseils patient / Recommandations cliniques
-// ═══════════════════════════════════════════════════════════
-function buildPdfHtml(data) {
-  const PHARMACY = {
-    name: "Pharmacie de l'Avenue",
-    address: "29 avenue du Général Leclerc, 75014 Paris",
-    city: "Paris",
-    phone: "01 43 21 25 85",
-  };
+const PHARMACY = {
+  name: "Pharmacie de l'Avenue",
+  address: "29 avenue du Général Leclerc, 75014 Paris",
+  city: "Paris",
+  phone: "01 43 21 25 85",
+};
 
+// ═══════════════════════════════════════════════════════════
+// PDF OFFICIEL — 1 page, à scanner à la Sécu
+// Identité + Thèmes + Synthèse + Signature + Cachet
+// ═══════════════════════════════════════════════════════════
+function buildPdfOfficielHtml(data) {
   const {
     prenom, nom, dateNaissance, sexe, ageGroup,
-    answers, refNumber, dateStr, timeStr,
-    themes, recos, priorityRecos, tips, questionsLib,
+    refNumber, dateStr, timeStr, themes, recos,
   } = data;
 
   const parTheme = {};
@@ -24,13 +23,12 @@ function buildPdfHtml(data) {
   const synthese = partsSynth.length === 0 ? "Aucune action particulière identifiée." : `Patient présentant ${partsSynth.join(", ")}.`;
 
   return `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Bilan ${refNumber}</title>
+<html><head><meta charset="UTF-8"><title>Bilan Officiel ${refNumber}</title>
 <style>
 @page { size: A4; margin: 16mm; }
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica', 'Arial', sans-serif; }
 body { color: #1E1E1E; font-size: 10pt; line-height: 1.5; }
-.page { min-height: calc(297mm - 32mm); display: flex; flex-direction: column; page-break-after: always; }
-.page:last-child { page-break-after: auto; }
+.page { min-height: calc(297mm - 32mm); display: flex; flex-direction: column; }
 .hdr { border-bottom: 2px solid #1A3A52; padding-bottom: 10px; margin-bottom: 14px; display: flex; justify-content: space-between; }
 .hdr h1 { font-size: 17pt; color: #1A3A52; font-family: 'Georgia', serif; margin-bottom: 2px; font-weight: 700; }
 .hdr .sub { font-size: 9pt; color: #6B7A8D; }
@@ -38,45 +36,28 @@ body { color: #1E1E1E; font-size: 10pt; line-height: 1.5; }
 .hdr-pharma small { font-weight: normal; color: #6B7A8D; }
 .hdr-right { font-size: 9pt; color: #1A3A52; text-align: right; line-height: 1.6; }
 .hdr-right .ref { font-weight: bold; }
-.section { margin-bottom: 12px; }
-.section-title { font-size: 9pt; font-weight: bold; color: #5A8A6A; text-transform: uppercase; letter-spacing: 1.2px; padding-bottom: 3px; border-bottom: 1px solid #E4E0D8; margin-bottom: 7px; }
-.identity { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; padding: 10px 12px; background: #F8F7F3; border-radius: 4px; }
+.section { margin-bottom: 14px; }
+.section-title { font-size: 9pt; font-weight: bold; color: #5A8A6A; text-transform: uppercase; letter-spacing: 1.2px; padding-bottom: 3px; border-bottom: 1px solid #E4E0D8; margin-bottom: 8px; }
+.identity { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 12px 14px; background: #F8F7F3; border-radius: 4px; }
 .field { display: flex; gap: 8px; align-items: baseline; font-size: 10pt; }
 .field-label { font-size: 8.5pt; color: #6B7A8D; text-transform: uppercase; letter-spacing: 0.5px; min-width: 90px; }
 .field-value { font-weight: bold; color: #1A3A52; }
-.field-empty { border-bottom: 1px dotted #6B7A8D; flex: 1; min-height: 14px; padding-left: 4px; }
-.themes { padding: 8px 12px; background: #EAF2EC; border-left: 3px solid #5A8A6A; border-radius: 4px; }
-.theme-line { font-size: 10pt; color: #1A3A52; margin: 2px 0; }
-.synthese { padding: 10px 12px; background: #FDF4E3; border-left: 3px solid #C8922A; border-radius: 4px; font-size: 10pt; color: #1A3A52; font-style: italic; }
+.field-empty { border-bottom: 1px dotted #6B7A8D; flex: 1; min-height: 16px; padding-left: 4px; }
+.themes { padding: 10px 14px; background: #EAF2EC; border-left: 3px solid #5A8A6A; border-radius: 4px; }
+.theme-line { font-size: 10.5pt; color: #1A3A52; margin: 3px 0; }
+.synthese { padding: 12px 14px; background: #FDF4E3; border-left: 3px solid #C8922A; border-radius: 4px; font-size: 10pt; color: #1A3A52; font-style: italic; }
 .spacer { flex: 1; }
-.signature { margin-top: 14px; padding-top: 10px; border-top: 1px solid #E4E0D8; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.sig-box { border: 1px solid #E4E0D8; padding: 10px; border-radius: 4px; min-height: 70px; }
-.sig-title { font-size: 8.5pt; color: #6B7A8D; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
+.signature { margin-top: 16px; padding-top: 12px; border-top: 1px solid #E4E0D8; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.sig-box { border: 1px solid #E4E0D8; padding: 12px; border-radius: 4px; min-height: 90px; }
+.sig-title { font-size: 8.5pt; color: #6B7A8D; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
 .signed { font-size: 9pt; color: #5A8A6A; font-weight: bold; }
 .signed-info { font-size: 9pt; color: #6B7A8D; margin-top: 3px; line-height: 1.4; }
 .lieu-date { font-size: 9pt; color: #1A3A52; text-align: right; margin-bottom: 6px; }
-.legal { margin-top: 10px; padding: 6px 10px; background: #F8F7F3; border-radius: 4px; font-size: 8pt; color: #6B7A8D; text-align: center; line-height: 1.5; }
-.footer { margin-top: 8px; font-size: 7.5pt; color: #6B7A8D; text-align: center; padding-top: 6px; border-top: 1px solid #E4E0D8; }
-.tip { padding: 9px 12px; border: 1px solid #E4E0D8; margin-bottom: 6px; border-radius: 5px; page-break-inside: avoid; }
-.tip-title { font-size: 10pt; font-weight: 700; color: #1A3A52; margin-bottom: 3px; }
-.tip-text { font-size: 9pt; color: #1E1E1E; line-height: 1.55; }
-.reco { padding: 8px 10px; border: 1px solid #E4E0D8; margin-bottom: 5px; border-radius: 4px; page-break-inside: avoid; }
-.reco-priority { font-size: 7.5pt; font-weight: bold; padding: 1px 5px; border-radius: 3px; display: inline-block; margin-right: 6px; }
-.priority-high { background: #EAF2EC; color: #5A8A6A; }
-.priority-low { background: #FDF4E3; color: #C8922A; }
-.reco-theme { font-size: 7.5pt; color: #6B7A8D; }
-.reco-label { font-weight: bold; color: #1A3A52; margin-top: 3px; font-size: 9.5pt; }
-.reco-detail { font-size: 8.5pt; color: #6B7A8D; margin-top: 2px; line-height: 1.45; }
-.ppp { padding: 9px 11px; background: #FAFAF7; border: 1px solid #E4E0D8; border-radius: 4px; page-break-inside: avoid; font-size: 9pt; }
-.ppp-line { margin: 3px 0; }
-.ppp-label { font-size: 8pt; color: #6B7A8D; text-transform: uppercase; font-weight: 600; }
-.qa { display: flex; padding: 4px 0; border-bottom: 1px solid #F0EDE5; font-size: 8.5pt; }
-.qa-q { flex: 1; color: #6B7A8D; padding-right: 10px; }
-.qa-a { font-weight: bold; color: #1A3A52; max-width: 38%; text-align: right; }
+.legal { margin-top: 12px; padding: 8px 10px; background: #F8F7F3; border-radius: 4px; font-size: 8pt; color: #6B7A8D; text-align: center; line-height: 1.5; }
+.footer { margin-top: 10px; font-size: 7.5pt; color: #6B7A8D; text-align: center; padding-top: 6px; border-top: 1px solid #E4E0D8; }
 </style></head>
 <body>
 
-<!-- ═══════════ PAGE 1 — IDENTITÉ + THÈMES + SIGNATURE ═══════════ -->
 <div class="page">
   <div class="hdr">
     <div>
@@ -136,14 +117,64 @@ body { color: #1E1E1E; font-size: 10pt; line-height: 1.5; }
     Bilan réalisé en officine · À archiver dans le dossier patient.
   </div>
 
-  <div class="footer">${PHARMACY.name} · Référence ${refNumber} · Page 1/3</div>
+  <div class="footer">${PHARMACY.name} · Référence ${refNumber} · Document à scanner pour facturation</div>
 </div>
 
-<!-- ═══════════ PAGE 2 — CONSEILS PATIENT ═══════════ -->
+</body></html>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// PDF DÉTAIL — 2 pages : Conseils patient + Recos cliniques + Historique
+// Pour archive interne et accompagnement
+// ═══════════════════════════════════════════════════════════
+function buildPdfDetailHtml(data) {
+  const {
+    prenom, nom, dateNaissance, refNumber, dateStr,
+    themes, recos, priorityRecos, tips, questionsLib, answers,
+  } = data;
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Détail ${refNumber}</title>
+<style>
+@page { size: A4; margin: 16mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica', 'Arial', sans-serif; }
+body { color: #1E1E1E; font-size: 10pt; line-height: 1.5; }
+.page { min-height: calc(297mm - 32mm); display: flex; flex-direction: column; page-break-after: always; }
+.page:last-child { page-break-after: auto; }
+.hdr { border-bottom: 2px solid #1A3A52; padding-bottom: 10px; margin-bottom: 14px; display: flex; justify-content: space-between; }
+.hdr h1 { font-size: 17pt; color: #1A3A52; font-family: 'Georgia', serif; margin-bottom: 2px; font-weight: 700; }
+.hdr .sub { font-size: 9pt; color: #6B7A8D; }
+.hdr-right { font-size: 9pt; color: #1A3A52; text-align: right; line-height: 1.6; }
+.hdr-right .ref { font-weight: bold; }
+.section { margin-bottom: 12px; }
+.section-title { font-size: 9pt; font-weight: bold; color: #5A8A6A; text-transform: uppercase; letter-spacing: 1.2px; padding-bottom: 3px; border-bottom: 1px solid #E4E0D8; margin-bottom: 7px; }
+.tip { padding: 9px 12px; border: 1px solid #E4E0D8; margin-bottom: 6px; border-radius: 5px; page-break-inside: avoid; }
+.tip-title { font-size: 10pt; font-weight: 700; color: #1A3A52; margin-bottom: 3px; }
+.tip-text { font-size: 9pt; color: #1E1E1E; line-height: 1.55; }
+.reco { padding: 8px 10px; border: 1px solid #E4E0D8; margin-bottom: 5px; border-radius: 4px; page-break-inside: avoid; }
+.reco-priority { font-size: 7.5pt; font-weight: bold; padding: 1px 5px; border-radius: 3px; display: inline-block; margin-right: 6px; }
+.priority-high { background: #EAF2EC; color: #5A8A6A; }
+.priority-low { background: #FDF4E3; color: #C8922A; }
+.reco-theme { font-size: 7.5pt; color: #6B7A8D; }
+.reco-label { font-weight: bold; color: #1A3A52; margin-top: 3px; font-size: 9.5pt; }
+.reco-detail { font-size: 8.5pt; color: #6B7A8D; margin-top: 2px; line-height: 1.45; }
+.ppp { padding: 9px 11px; background: #FAFAF7; border: 1px solid #E4E0D8; border-radius: 4px; page-break-inside: avoid; font-size: 9pt; }
+.ppp-line { margin: 3px 0; }
+.ppp-label { font-size: 8pt; color: #6B7A8D; text-transform: uppercase; font-weight: 600; }
+.qa { display: flex; padding: 4px 0; border-bottom: 1px solid #F0EDE5; font-size: 8.5pt; }
+.qa-q { flex: 1; color: #6B7A8D; padding-right: 10px; }
+.qa-a { font-weight: bold; color: #1A3A52; max-width: 38%; text-align: right; }
+.spacer { flex: 1; }
+.legal { margin-top: 10px; padding: 6px 10px; background: #F8F7F3; border-radius: 4px; font-size: 8pt; color: #6B7A8D; text-align: center; line-height: 1.5; }
+.footer { margin-top: 8px; font-size: 7.5pt; color: #6B7A8D; text-align: center; padding-top: 6px; border-top: 1px solid #E4E0D8; }
+</style></head>
+<body>
+
+<!-- PAGE 1 : Conseils patient + Recos cliniques -->
 <div class="page">
   <div class="hdr">
     <div>
-      <h1>Vos recommandations santé</h1>
+      <h1>Compte-rendu détaillé</h1>
       <div class="sub">${prenom} ${nom.toUpperCase()} · ${dateNaissance}</div>
     </div>
     <div class="hdr-right">
@@ -153,22 +184,19 @@ body { color: #1E1E1E; font-size: 10pt; line-height: 1.5; }
   </div>
 
   <div class="section">
-    <div class="section-title">Conseils personnalisés</div>
-    ${(tips || []).map(tip => `
+    <div class="section-title">Conseils personnalisés au patient</div>
+    ${(tips || []).map(t => `
       <div class="tip">
-        <div class="tip-title">${tip.title}</div>
-        <div class="tip-text">${tip.text}</div>
+        <div class="tip-title">${t.icon || ''} ${t.title}</div>
+        <div class="tip-text">${t.text}</div>
       </div>
     `).join("")}
   </div>
 
-  <div class="spacer"></div>
-
-  <div class="legal">Vos données sont traitées dans le respect du RGPD et restent confidentielles.</div>
-  <div class="footer">${PHARMACY.name} · Référence ${refNumber} · Page 2/3</div>
+  <div class="footer">${PHARMACY.name} · Référence ${refNumber} · Page 1/2</div>
 </div>
 
-<!-- ═══════════ PAGE 3 — RECOMMANDATIONS CLINIQUES + PPP + RÉPONSES ═══════════ -->
+<!-- PAGE 2 : Recos cliniques + PPP + Historique -->
 <div class="page">
   <div class="hdr">
     <div>
@@ -215,14 +243,48 @@ body { color: #1E1E1E; font-size: 10pt; line-height: 1.5; }
   <div class="spacer"></div>
 
   <div class="legal">Document conforme au dispositif « Mon Bilan Prévention » — Arrêté du 28 mai 2024.</div>
-  <div class="footer">${PHARMACY.name} · Référence ${refNumber} · Page 3/3</div>
+  <div class="footer">${PHARMACY.name} · Référence ${refNumber} · Page 2/2</div>
 </div>
 
 </body></html>`;
 }
 
 // ═══════════════════════════════════════════════════════════
-// API : Envoi du mail au pharmacien avec PDF en pièce jointe
+// Génération PDF via PDFShift
+// ═══════════════════════════════════════════════════════════
+async function generatePDF(html, apiKey) {
+  try {
+    const pdfResponse = await fetch("https://api.pdfshift.io/v3/convert/pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Basic " + Buffer.from("api:" + (apiKey || "")).toString("base64"),
+      },
+      body: JSON.stringify({
+        source: html,
+        format: "A4",
+        margin: "0",
+        sandbox: !apiKey,
+        landscape: false,
+      }),
+    });
+
+    if (pdfResponse.ok) {
+      const pdfBuffer = await pdfResponse.arrayBuffer();
+      return Buffer.from(pdfBuffer).toString("base64");
+    } else {
+      const errText = await pdfResponse.text();
+      console.error("PDFShift error:", pdfResponse.status, errText);
+      return null;
+    }
+  } catch (e) {
+    console.error("Erreur PDF:", e);
+    return null;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// API : Envoi mail avec 2 PDFs en pièce jointe
 // ═══════════════════════════════════════════════════════════
 export async function POST(request) {
   try {
@@ -240,42 +302,29 @@ export async function POST(request) {
     const partsSynth = Object.entries(parTheme).map(([t, n]) => `${n} action${n > 1 ? "s" : ""} en ${t.toLowerCase()}`);
     const synthese = partsSynth.length === 0 ? "Aucune action particulière identifiée." : `Patient présentant ${partsSynth.join(", ")}.`;
 
-    // ─── Génération du PDF via PDFShift (sandbox gratuit ou clé) ───
-    let pdfAttachment = null;
-    try {
-      const pdfHtml = buildPdfHtml(data);
-      const apiKey = process.env.PDFSHIFT_API_KEY;
-      const pdfResponse = await fetch("https://api.pdfshift.io/v3/convert/pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Basic " + Buffer.from("api:" + (apiKey || "")).toString("base64"),
-        },
-        body: JSON.stringify({
-          source: pdfHtml,
-          format: "A4",
-          margin: "0",
-          sandbox: !apiKey,
-          landscape: false,
-        }),
-      });
+    const apiKey = process.env.PDFSHIFT_API_KEY;
 
-      if (pdfResponse.ok) {
-        const pdfBuffer = await pdfResponse.arrayBuffer();
-        const pdfBase64 = Buffer.from(pdfBuffer).toString("base64");
-        pdfAttachment = {
-          filename: `Bilan_Prevention_${nom}_${prenom}_${refNumber}.pdf`,
-          content: pdfBase64,
-        };
-      } else {
-        const errText = await pdfResponse.text();
-        console.error("PDFShift error:", pdfResponse.status, errText);
-      }
-    } catch (pdfError) {
-      console.error("Erreur génération PDF:", pdfError);
+    // ─── Génération des 2 PDFs en parallèle ───
+    const [pdfOfficielBase64, pdfDetailBase64] = await Promise.all([
+      generatePDF(buildPdfOfficielHtml(data), apiKey),
+      generatePDF(buildPdfDetailHtml(data), apiKey),
+    ]);
+
+    const attachments = [];
+    if (pdfOfficielBase64) {
+      attachments.push({
+        filename: `Bilan_Officiel_${nom}_${prenom}_${refNumber}.pdf`,
+        content: pdfOfficielBase64,
+      });
+    }
+    if (pdfDetailBase64) {
+      attachments.push({
+        filename: `Detail_${nom}_${prenom}_${refNumber}.pdf`,
+        content: pdfDetailBase64,
+      });
     }
 
-    // ─── Mail HTML pour le pharmacien (résumé) ───
+    // ─── Mail HTML pour le pharmacien ───
     const mailHtml = `
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"></head>
@@ -289,14 +338,17 @@ export async function POST(request) {
 
   <div style="background: white; padding: 22px 20px; border: 1px solid #E4E0D8; border-top: none;">
 
-    ${pdfAttachment ? `
+    ${attachments.length > 0 ? `
     <div style="background: #EAF2EC; border-left: 3px solid #5A8A6A; padding: 12px 14px; border-radius: 4px; margin-bottom: 18px;">
-      <div style="font-size: 13px; font-weight: 700; color: #1A3A52;">📎 Compte-rendu PDF en pièce jointe</div>
-      <div style="font-size: 11px; color: #6B7A8D; margin-top: 3px;">Document officiel 3 pages prêt à archiver et scanner pour la facturation.</div>
+      <div style="font-size: 13px; font-weight: 700; color: #1A3A52;">📎 2 documents en pièce jointe</div>
+      <div style="font-size: 11px; color: #6B7A8D; margin-top: 5px; line-height: 1.6;">
+        <strong style="color: #1A3A52;">• Bilan Officiel</strong> (1 page) — À tamponner et scanner pour la facturation Sécu<br>
+        <strong style="color: #1A3A52;">• Détail</strong> (2 pages) — Conseils patient + recommandations cliniques + historique des réponses
+      </div>
     </div>
     ` : `
     <div style="background: #FDF0EE; border-left: 3px solid #C0392B; padding: 12px 14px; border-radius: 4px; margin-bottom: 18px;">
-      <div style="font-size: 13px; font-weight: 700; color: #C0392B;">⚠️ PDF non généré</div>
+      <div style="font-size: 13px; font-weight: 700; color: #C0392B;">⚠️ PDF non générés</div>
       <div style="font-size: 11px; color: #6B7A8D; margin-top: 3px;">Le détail complet est disponible ci-dessous.</div>
     </div>
     `}
@@ -339,13 +391,13 @@ export async function POST(request) {
       html: mailHtml,
     };
 
-    if (pdfAttachment) {
-      emailPayload.attachments = [pdfAttachment];
+    if (attachments.length > 0) {
+      emailPayload.attachments = attachments;
     }
 
     const result = await resend.emails.send(emailPayload);
 
-    return Response.json({ success: true, id: result.data?.id, hasPDF: !!pdfAttachment });
+    return Response.json({ success: true, id: result.data?.id, pdfCount: attachments.length });
   } catch (error) {
     console.error("Erreur envoi mail:", error);
     return Response.json({ success: false, error: error.message }, { status: 500 });
