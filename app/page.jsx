@@ -67,85 +67,89 @@ function capitalize(str) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// QUESTIONS V7 — 15 questions par tranche, 3 thèmes
-// Thèmes officiels Sécu intégrés (sommeil, santé mentale, violences, etc.)
+// QUESTIONS V8 — vaccins enrichis, dépistages retirés 70+
 // ═══════════════════════════════════════════════════════════
 const QUESTIONS = {
   "18-25": [
-    // Thème 1 : Conduites addictives (5)
-    { id: "tabac", theme: "Conduites addictives", q: "Fumez-vous ou utilisez-vous une cigarette électronique ?", opts: ["Non", "J'ai arrêté", "Oui, cigarette électronique", "Oui, je fume"] },
-    { id: "alcool", theme: "Conduites addictives", q: "Quelle est votre consommation d'alcool habituelle ?", opts: ["Jamais ou rarement", "Moins de 10 verres par semaine", "Plus de 2 verres par jour", "Plus de 10 verres par semaine"] },
-    { id: "binge", theme: "Conduites addictives", q: "Vous arrive-t-il de boire rapidement pour être ivre ?", opts: ["Non, jamais", "Rarement", "Parfois", "Oui, souvent"] },
-    { id: "substances", theme: "Conduites addictives", q: "Avez-vous consommé du cannabis ou d'autres substances cette année ?", opts: ["Non", "Oui, du cannabis", "Oui, du protoxyde d'azote (gaz hilarant)", "Oui, d'autres substances"] },
-    { id: "jeux", theme: "Conduites addictives", q: "Pariez-vous de l'argent sur des jeux ou des paris sportifs ?", opts: ["Non", "Rarement", "De temps en temps", "Oui, souvent"] },
-    // Thème 2 : Vaccination & santé sexuelle (4)
-    { id: "vaccins_base", theme: "Vaccination & santé sexuelle", q: "Pensez-vous être à jour de vos vaccins obligatoires ?", opts: ["Oui, je pense", "Non", "Je ne sais pas"] },
-    { id: "hpv", theme: "Vaccination & santé sexuelle", q: "Avez-vous reçu le vaccin contre le papillomavirus (HPV) ?", opts: ["Oui", "Non", "Je ne sais pas"] },
-    { id: "ist", theme: "Vaccination & santé sexuelle", q: "Avez-vous fait un dépistage des maladies sexuellement transmissibles récemment ?", opts: ["Oui, récemment", "Oui, il y a longtemps", "Non", "Non concerné(e)"] },
-    { id: "contraception", theme: "Vaccination & santé sexuelle", q: "Utilisez-vous une contraception adaptée à votre situation ?", opts: ["Oui", "Non", "Non concerné(e)", "Je souhaite en parler"], sexeOnly: "Une femme" },
-    // Thème 3 : Bien-être mental & sommeil (NOUVEAU - 6)
+    // Thème 1 : Vaccination (6) — ENRICHI
+    { id: "dtp_18", theme: "Vaccination", q: "Avez-vous fait votre rappel DTP (diphtérie, tétanos, polio) à 25 ans ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "coqueluche_18", theme: "Vaccination", q: "Avez-vous fait le rappel coqueluche à 25 ans ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "hpv", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre le papillomavirus (HPV) ?", opts: ["Oui, schéma complet", "Oui, partiel", "Non", "Je ne sais pas"] },
+    { id: "meningo_acwy", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le méningocoque ACWY ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "meningo_b", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le méningocoque B ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "grippe_18", theme: "Vaccination", q: "Souffrez-vous d'asthme, diabète, ou autre maladie chronique nécessitant un vaccin grippe ?", opts: ["Oui et je suis vacciné(e)", "Oui mais non vacciné(e)", "Non", "Je ne sais pas"] },
+    // Thème 2 : Conduites & santé sexuelle (5)
+    { id: "tabac", theme: "Conduites addictives & santé sexuelle", q: "Fumez-vous ou utilisez-vous une cigarette électronique ?", opts: ["Non", "J'ai arrêté", "Oui, cigarette électronique", "Oui, je fume"] },
+    { id: "alcool", theme: "Conduites addictives & santé sexuelle", q: "Quelle est votre consommation d'alcool habituelle ?", opts: ["Jamais ou rarement", "Moins de 10 verres par semaine", "Plus de 2 verres par jour", "Plus de 10 verres par semaine"] },
+    { id: "substances", theme: "Conduites addictives & santé sexuelle", q: "Avez-vous consommé du cannabis ou d'autres substances cette année ?", opts: ["Non", "Oui, du cannabis", "Oui, du protoxyde d'azote", "Oui, d'autres substances"] },
+    { id: "ist", theme: "Conduites addictives & santé sexuelle", q: "Avez-vous fait un dépistage des maladies sexuellement transmissibles récemment ?", opts: ["Oui, récemment", "Oui, il y a longtemps", "Non", "Non concerné(e)"] },
+    { id: "contraception", theme: "Conduites addictives & santé sexuelle", q: "Utilisez-vous une contraception adaptée à votre situation ?", opts: ["Oui", "Non", "Non concerné(e)", "Je souhaite en parler"], sexeOnly: "Une femme" },
+    // Thème 3 : Sommeil & bien-être mental (6)
     { id: "sommeil_qualite", theme: "Sommeil & bien-être mental", q: "Diriez-vous que vous avez des problèmes de sommeil ?", opts: ["Non", "Oui, parfois", "Oui, souvent", "Je prends des somnifères"] },
     { id: "sommeil_duree", theme: "Sommeil & bien-être mental", q: "En moyenne, combien d'heures dormez-vous par nuit ?", opts: ["Moins de 6h", "Entre 6h et 8h", "Entre 8h et 10h", "Plus de 10h"] },
     { id: "mental", theme: "Sommeil & bien-être mental", q: "Ces 2 dernières semaines, avez-vous ressenti de la nervosité ou de l'anxiété ?", opts: ["Jamais", "Plusieurs jours", "Plus de 7 jours", "Presque tous les jours"] },
     { id: "tristesse", theme: "Sommeil & bien-être mental", q: "Ces 2 dernières semaines, avez-vous éprouvé tristesse, déprime ou désespoir ?", opts: ["Jamais", "Plusieurs jours", "Plus de 7 jours", "Presque tous les jours"] },
     { id: "idees_noires", theme: "Sommeil & bien-être mental", q: "Avez-vous déjà eu des idées noires ou suicidaires ?", opts: ["Non", "Oui, des idées noires", "Oui, une tentative de suicide"] },
-    { id: "violences", theme: "Sommeil & bien-être mental", q: "Avez-vous déjà été victime de violences (physiques, sexuelles, psychiques), de harcèlement ou de discrimination ?", opts: ["Non", "Oui", "Je préfère ne pas répondre"] },
+    { id: "violences", theme: "Sommeil & bien-être mental", q: "Avez-vous déjà été victime de violences, harcèlement ou discrimination ?", opts: ["Non", "Oui", "Je préfère ne pas répondre"] },
   ],
   "45-50": [
-    // Thème 1 : Vaccination & dépistages (5)
-    { id: "vaccins", theme: "Vaccination & dépistages", q: "Pensez-vous être à jour de vos vaccins (tétanos, diphtérie) ?", opts: ["Oui, je pense", "Non", "Je ne sais pas"] },
-    { id: "colorectal", theme: "Vaccination & dépistages", q: "Avez-vous déjà fait le test de dépistage du cancer du côlon ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Je ne sais pas"] },
-    { id: "sein", theme: "Vaccination & dépistages", q: "Avez-vous fait une mammographie (radiographie du sein) ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Non concerné(e)"], sexeOnly: "Une femme" },
-    { id: "col", theme: "Vaccination & dépistages", q: "Avez-vous fait un frottis (dépistage du cancer du col de l'utérus) ?", opts: ["Oui, il y a moins de 5 ans", "Oui, il y a plus de 5 ans", "Non, jamais", "Non concerné(e)"], sexeOnly: "Une femme" },
-    { id: "prise_sang", theme: "Vaccination & dépistages", q: "À quand remonte votre dernière prise de sang ?", opts: ["Moins de 6 mois", "Entre 6 mois et 1 an", "Plus d'un an", "Je ne sais pas"] },
-    // Thème 2 : Activité physique & alimentation (5)
-    { id: "activite", theme: "Activité physique & alimentation", q: "Combien de fois par semaine faites-vous au moins 30 min de sport ou de marche rapide ?", opts: ["Jamais", "1 à 2 fois", "3 à 4 fois", "5 fois ou plus"] },
-    { id: "sedentarite", theme: "Activité physique & alimentation", q: "Combien d'heures par jour restez-vous assis(e) (travail, canapé, voiture) ?", opts: ["Moins de 2 heures", "2 à 4 heures", "4 à 7 heures", "Plus de 7 heures"] },
-    { id: "fruits", theme: "Activité physique & alimentation", q: "Mangez-vous des fruits et légumes tous les jours ?", opts: ["Oui, 5 portions ou plus", "Oui, 3 à 4 portions", "Oui, 1 à 2 portions", "Rarement ou jamais"] },
-    { id: "gras_sucre", theme: "Activité physique & alimentation", q: "À quelle fréquence consommez-vous charcuterie, sodas, fast-food ou pâtisseries ?", opts: ["Rarement ou jamais", "1 fois par semaine", "Plusieurs fois par semaine", "Tous les jours"] },
-    { id: "tabac_45", theme: "Activité physique & alimentation", q: "Fumez-vous ou utilisez-vous une cigarette électronique ?", opts: ["Non", "J'ai arrêté", "Oui, cigarette électronique", "Oui, je fume"] },
-    // Thème 3 : Sommeil, bien-être mental & symptômes (NOUVEAU - 5)
+    // Thème 1 : Vaccination (4) — ENRICHI
+    { id: "dtp_45", theme: "Vaccination", q: "Avez-vous fait votre rappel DTP (diphtérie, tétanos, polio) à 45 ans ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "coqueluche_45", theme: "Vaccination", q: "Avez-vous fait le rappel coqueluche à 45 ans ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "grippe_45", theme: "Vaccination", q: "Souffrez-vous d'asthme, diabète, surpoids, ou autre maladie chronique nécessitant un vaccin grippe ?", opts: ["Oui et je suis vacciné(e)", "Oui mais non vacciné(e)", "Non", "Je ne sais pas"] },
+    { id: "covid_45", theme: "Vaccination", q: "Avez-vous reçu une dose de rappel Covid-19 ces 12 derniers mois (si à risque) ?", opts: ["Oui", "Non, à risque", "Non, pas à risque", "Je ne sais pas"] },
+    // Thème 2 : Dépistages & mode de vie (6)
+    { id: "colorectal", theme: "Dépistages & mode de vie", q: "Avez-vous déjà fait le test de dépistage du cancer du côlon (recommandé dès 50 ans) ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Je ne sais pas"] },
+    { id: "sein", theme: "Dépistages & mode de vie", q: "Avez-vous fait une mammographie (recommandée dès 50 ans) ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Non concerné(e)"], sexeOnly: "Une femme" },
+    { id: "col", theme: "Dépistages & mode de vie", q: "Avez-vous fait un frottis (dépistage du cancer du col de l'utérus) ?", opts: ["Oui, il y a moins de 5 ans", "Oui, il y a plus de 5 ans", "Non, jamais", "Non concerné(e)"], sexeOnly: "Une femme" },
+    { id: "activite", theme: "Dépistages & mode de vie", q: "Combien de fois par semaine faites-vous au moins 30 min de sport ou marche rapide ?", opts: ["Jamais", "1 à 2 fois", "3 à 4 fois", "5 fois ou plus"] },
+    { id: "fruits", theme: "Dépistages & mode de vie", q: "Mangez-vous des fruits et légumes tous les jours ?", opts: ["Oui, 5 portions ou plus", "Oui, 3 à 4 portions", "Oui, 1 à 2 portions", "Rarement ou jamais"] },
+    { id: "tabac_45", theme: "Dépistages & mode de vie", q: "Fumez-vous ou utilisez-vous une cigarette électronique ?", opts: ["Non", "J'ai arrêté", "Oui, cigarette électronique", "Oui, je fume"] },
+    // Thème 3 : Sommeil & bien-être mental (5)
     { id: "essouffle", theme: "Sommeil & bien-être mental", q: "Êtes-vous plus facilement essoufflé(e) que les personnes de votre âge ?", opts: ["Non", "Oui, un peu", "Oui, nettement"] },
     { id: "sommeil_45", theme: "Sommeil & bien-être mental", q: "Diriez-vous que vous avez des problèmes de sommeil ?", opts: ["Non", "Oui, parfois", "Oui, souvent", "Je prends des somnifères"] },
     { id: "anxiete_45", theme: "Sommeil & bien-être mental", q: "Ces 2 dernières semaines, avez-vous ressenti de la nervosité ou de l'anxiété ?", opts: ["Jamais", "Plusieurs jours", "Plus de 7 jours", "Presque tous les jours"] },
     { id: "tristesse_45", theme: "Sommeil & bien-être mental", q: "Ces 2 dernières semaines, avez-vous éprouvé tristesse, déprime ou désespoir ?", opts: ["Jamais", "Plusieurs jours", "Plus de 7 jours", "Presque tous les jours"] },
-    { id: "violences_45", theme: "Sommeil & bien-être mental", q: "Avez-vous déjà été victime de violences (physiques, sexuelles, psychiques) ou de harcèlement ?", opts: ["Non", "Oui", "Je préfère ne pas répondre"] },
+    { id: "violences_45", theme: "Sommeil & bien-être mental", q: "Avez-vous déjà été victime de violences ou de harcèlement ?", opts: ["Non", "Oui", "Je préfère ne pas répondre"] },
   ],
   "60-65": [
-    // Thème 1 : Vaccination (5)
+    // Thème 1 : Vaccination (6) — ENRICHI
     { id: "grippe", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre la grippe cette saison ?", opts: ["Oui", "Pas encore cette saison", "Non, jamais", "Je ne sais pas"] },
     { id: "covid", theme: "Vaccination", q: "Avez-vous fait votre rappel contre la Covid-19 ?", opts: ["Oui", "Non", "Je ne sais pas"] },
-    { id: "zona", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le zona (maladie qui provoque de vives douleurs) ?", opts: ["Oui, les 2 injections", "Oui, seulement la 1ère injection", "Non", "Je ne sais pas"] },
-    { id: "pneumo", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre les pneumonies bactériennes (pneumocoque) ?", opts: ["Oui", "Non", "Je ne sais pas"] },
-    { id: "dtp_60", theme: "Vaccination", q: "Avez-vous fait un rappel de vaccin contre le tétanos ces 10 dernières années ?", opts: ["Oui", "Non ou je ne sais pas"] },
+    { id: "zona", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le zona (Shingrix - 2 injections) ?", opts: ["Oui, les 2 injections", "Oui, seulement la 1ère", "Non", "Je ne sais pas"] },
+    { id: "pneumo", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre les pneumonies bactériennes (pneumocoque - Prevenar 20) ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "dtp_60", theme: "Vaccination", q: "Avez-vous fait un rappel DTP ces 10 dernières années (recommandé à 65 ans) ?", opts: ["Oui", "Non ou je ne sais pas"] },
+    { id: "rsv_60", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le VRS (virus respiratoire syncytial) ?", opts: ["Oui", "Non", "Je ne sais pas ce que c'est"] },
     // Thème 2 : Dépistages & médicaments (5)
-    { id: "colorectal_60", theme: "Dépistages & médicaments", q: "Avez-vous déjà fait le test de dépistage du cancer du côlon ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Je ne sais pas"] },
-    { id: "mammo_60", theme: "Dépistages & médicaments", q: "Avez-vous fait une mammographie (radiographie du sein) ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Non concerné(e)"], sexeOnly: "Une femme" },
+    { id: "colorectal_60", theme: "Dépistages & médicaments", q: "Avez-vous fait le test de dépistage du cancer du côlon (recommandé jusqu'à 74 ans) ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Je ne sais pas"] },
+    { id: "mammo_60", theme: "Dépistages & médicaments", q: "Avez-vous fait une mammographie (recommandée jusqu'à 74 ans) ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Non concerné(e)"], sexeOnly: "Une femme" },
     { id: "medicaments_60", theme: "Dépistages & médicaments", q: "Combien de médicaments prenez-vous chaque jour ?", opts: ["Aucun ou 1 à 2", "3 à 4 médicaments", "5 à 6 médicaments", "7 ou plus"] },
     { id: "effets", theme: "Dépistages & médicaments", q: "Ressentez-vous des effets gênants liés à vos médicaments ?", opts: ["Non", "Parfois, mais gérable", "Oui, assez souvent", "Oui, et cela me préoccupe"] },
     { id: "chutes_60", theme: "Dépistages & médicaments", q: "Avez-vous chuté au cours des 12 derniers mois ?", opts: ["Non", "1 fois, sans me blesser", "1 fois, avec une blessure", "Plusieurs fois"] },
-    // Thème 3 : Activité, alimentation & bien-être mental (NOUVEAU - 5)
-    { id: "activite_60", theme: "Mode de vie & bien-être", q: "Combien de fois par semaine faites-vous au moins 30 min d'activité physique (marche, ménage, vélo, jardinage) ?", opts: ["Jamais", "1 à 2 fois", "3 à 4 fois", "5 à 7 fois"] },
+    // Thème 3 : Mode de vie & bien-être (5)
+    { id: "activite_60", theme: "Mode de vie & bien-être", q: "Combien de fois par semaine faites-vous au moins 30 min d'activité physique ?", opts: ["Jamais", "1 à 2 fois", "3 à 4 fois", "5 à 7 fois"] },
     { id: "fruits_60", theme: "Mode de vie & bien-être", q: "Mangez-vous des fruits et légumes tous les jours ?", opts: ["Oui, 5 portions ou plus", "Oui, 1 à 4 portions", "De temps en temps", "Rarement ou jamais"] },
     { id: "memoire_60", theme: "Mode de vie & bien-être", q: "Avez-vous la sensation d'oublier des choses plus qu'avant ?", opts: ["Non", "Oui, un peu", "Oui, et cela me préoccupe"] },
     { id: "sommeil_60", theme: "Mode de vie & bien-être", q: "Diriez-vous que vous avez des problèmes de sommeil ?", opts: ["Non", "Oui, parfois", "Oui, souvent", "Je prends des somnifères"] },
     { id: "moral_60", theme: "Mode de vie & bien-être", q: "Ces 2 dernières semaines, avez-vous ressenti anxiété, tristesse ou perte d'intérêt ?", opts: ["Jamais", "Plusieurs jours", "Plus de 7 jours", "Presque tous les jours"] },
   ],
   "70-75": [
-    // Thème 1 : Vaccination (5)
-    { id: "grippe_70", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre la grippe cette saison ?", opts: ["Oui", "Pas encore cette saison", "Non, jamais", "Je ne sais pas"] },
+    // Thème 1 : Vaccination (7) — ENRICHI MAX
+    { id: "grippe_70", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre la grippe cette saison (vaccin haute dose Efluelda) ?", opts: ["Oui", "Pas encore cette saison", "Non, jamais", "Je ne sais pas"] },
     { id: "covid_70", theme: "Vaccination", q: "Avez-vous fait votre rappel contre la Covid-19 ?", opts: ["Oui", "Non", "Je ne sais pas"] },
-    { id: "zona_70", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le zona (maladie qui provoque de vives douleurs) ?", opts: ["Oui, les 2 injections", "Oui, seulement la 1ère injection", "Non", "Je ne sais pas"] },
-    { id: "pneumo_70", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre les pneumonies bactériennes (pneumocoque) ?", opts: ["Oui", "Non", "Je ne sais pas"] },
-    { id: "dtp_70", theme: "Vaccination", q: "Avez-vous fait un rappel de vaccin contre le tétanos ces 10 dernières années ?", opts: ["Oui", "Non ou je ne sais pas"] },
-    // Thème 2 : Médicaments & autonomie (5)
+    { id: "zona_70", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le zona (Shingrix - 2 injections) ?", opts: ["Oui, les 2 injections", "Oui, seulement la 1ère", "Non", "Je ne sais pas"] },
+    { id: "pneumo_70", theme: "Vaccination", q: "Avez-vous reçu le vaccin contre les pneumonies bactériennes (pneumocoque - Prevenar 20) ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    { id: "dtp_70", theme: "Vaccination", q: "Avez-vous fait un rappel DTP ces 10 dernières années ?", opts: ["Oui", "Non ou je ne sais pas"] },
+    { id: "rsv_70", theme: "Vaccination", q: "Avez-vous été vacciné(e) contre le VRS (virus respiratoire syncytial, vaccin Abrysvo/Arexvy) ?", opts: ["Oui", "Non", "Je ne sais pas ce que c'est"] },
+    { id: "coqueluche_70", theme: "Vaccination", q: "Avez-vous fait un rappel coqueluche récemment (important si contact avec nourrissons) ?", opts: ["Oui", "Non", "Je ne sais pas"] },
+    // Thème 2 : Médicaments & autonomie (5) — dépistages colon/mammo RETIRÉS
     { id: "medicaments_70", theme: "Médicaments & autonomie", q: "Combien de médicaments prenez-vous chaque jour ?", opts: ["1 à 4 médicaments", "5 à 6 médicaments", "7 à 9 médicaments", "10 ou plus"] },
-    { id: "observance", theme: "Médicaments & autonomie", q: "Vous arrive-t-il d'oublier de prendre vos médicaments ?", opts: ["Jamais", "Rarement (1 fois/mois environ)", "Parfois (1 fois/semaine)", "Souvent"] },
-    { id: "colorectal_70", theme: "Médicaments & autonomie", q: "Avez-vous déjà fait le test de dépistage du cancer du côlon ?", opts: ["Oui, il y a moins de 2 ans", "Oui, il y a longtemps", "Non, jamais", "Je ne sais pas"] },
+    { id: "observance", theme: "Médicaments & autonomie", q: "Vous arrive-t-il d'oublier de prendre vos médicaments ?", opts: ["Jamais", "Rarement (1 fois/mois)", "Parfois (1 fois/semaine)", "Souvent"] },
+    { id: "effets_70", theme: "Médicaments & autonomie", q: "Ressentez-vous des effets gênants liés à vos médicaments ?", opts: ["Non", "Parfois, mais gérable", "Oui, assez souvent", "Oui, et cela me préoccupe"] },
     { id: "chutes_70", theme: "Médicaments & autonomie", q: "Avez-vous chuté au cours des 6 derniers mois ?", opts: ["Non", "1 fois, sans me blesser", "1 fois, avec une blessure", "Plusieurs fois"] },
     { id: "autonomie", theme: "Médicaments & autonomie", q: "Avez-vous des difficultés pour certains gestes du quotidien (toilette, habillage, repas) ?", opts: ["Non, aucune difficulté", "Pour quelques gestes", "Pour plusieurs gestes", "J'ai besoin d'aide régulièrement"] },
-    // Thème 3 : Mode de vie & bien-être (NOUVEAU - 5)
-    { id: "activite_70", theme: "Mode de vie & bien-être", q: "Combien de fois par semaine faites-vous au moins 30 min d'activité physique (marche, ménage, jardinage) ?", opts: ["Jamais", "1 à 2 fois", "3 à 4 fois", "5 à 7 fois"] },
+    // Thème 3 : Mode de vie & bien-être (5)
+    { id: "activite_70", theme: "Mode de vie & bien-être", q: "Combien de fois par semaine faites-vous au moins 30 min d'activité physique ?", opts: ["Jamais", "1 à 2 fois", "3 à 4 fois", "5 à 7 fois"] },
     { id: "fruits_70", theme: "Mode de vie & bien-être", q: "Mangez-vous des fruits et légumes tous les jours ?", opts: ["Oui, 5 portions ou plus", "Oui, 1 à 4 portions", "De temps en temps", "Rarement ou jamais"] },
     { id: "logement_70", theme: "Mode de vie & bien-être", q: "Votre logement est-il adapté pour prévenir les chutes (douche, barres, WC surélevé) ?", opts: ["Oui, bien adapté", "En partie", "Non, pas vraiment", "Je ne sais pas"] },
     { id: "memoire_70", theme: "Mode de vie & bien-être", q: "Avez-vous la sensation d'oublier des choses plus qu'avant ?", opts: ["Non", "Oui, un peu", "Oui, et cela me préoccupe"] },
@@ -158,362 +162,165 @@ function getQuestionsForSexe(age, sexe) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// CONSEILS PATIENT V7 — enrichis avec nouveaux thèmes
+// CONSEILS PATIENT V8
 // ═══════════════════════════════════════════════════════════
 function getPatientAdvice(age, a, sexe, prenom) {
   const tips = [];
   if (age === "18-25") {
-    if (a.tabac === "Oui, je fume" || a.tabac === "Oui, cigarette électronique") tips.push({ icon: "🚭", title: "Tabac", text: `Arrêter le tabac à votre âge, ${prenom}, est l'une des meilleures décisions santé que vous puissiez prendre. Les bénéfices sont rapides : meilleure haleine en 48h, meilleur souffle en 3 jours, peau qui se régénère en quelques semaines. Votre pharmacien peut vous proposer des patchs, gommes ou comprimés adaptés. La méthode la plus efficace combine substituts + accompagnement. Tabac Info Service : 3989.` });
-    if (a.alcool === "Plus de 2 verres par jour" || a.alcool === "Plus de 10 verres par semaine" || a.binge === "Souvent" || a.binge === "Parfois") tips.push({ icon: "💧", title: "Alcool", text: `Les repères officiels : maximum 10 verres par semaine, pas plus de 2 par jour, avec au minimum 2 jours sans alcool. Au-delà, le risque pour la santé augmente significativement (foie, cœur, cerveau). Si vous voulez réduire, votre pharmacien peut vous orienter et conseiller des compléments soutenant le foie (desmodium, chardon-Marie). Alcool Info Service : 0 980 980 930.` });
-    if (a.substances && a.substances !== "Non") tips.push({ icon: "⚠️", title: "Substances", text: `Le cerveau continue à se développer jusqu'à 25 ans. Les substances psychoactives, même occasionnelles, peuvent avoir un impact durable sur la mémoire et la concentration. Un échange confidentiel et sans jugement est toujours possible. Drogues Info Service : 0 800 23 13 13 (gratuit, anonyme, 7j/7).` });
-    if (a.jeux === "Oui, souvent" || a.jeux === "De temps en temps") tips.push({ icon: "🎲", title: "Jeux et paris", text: `Les jeux d'argent peuvent créer une dépendance progressive. Les signaux à surveiller : difficulté à arrêter, mensonges sur les sommes jouées, jouer pour récupérer ses pertes. Joueurs Info Service : 09 74 75 13 13 (gratuit, anonyme).` });
-    if (a.vaccins_base === "Non" || a.vaccins_base === "Je ne sais pas") tips.push({ icon: "💉", title: "Vaccins", text: `À votre âge, plusieurs rappels sont recommandés : DTP tous les 20 ans, méningocoque selon votre profil. Votre pharmacien peut consulter votre carnet de santé et réaliser directement les rappels nécessaires en officine, sans ordonnance.` });
-    if (a.hpv === "Non" || a.hpv === "Je ne sais pas") tips.push({ icon: "🛡️", title: "Vaccin HPV", text: `Le vaccin HPV protège contre des cancers graves (col de l'utérus, gorge, anus). Recommandé jusqu'à 19 ans, avec un rattrapage possible jusqu'à 26 ans. Il fait partie des vaccins les plus efficaces qui existent (>90% de protection).` });
-    if (a.ist === "Non" || a.ist === "Oui, il y a longtemps") tips.push({ icon: "🔬", title: "Dépistage MST", text: `Un dépistage régulier (1 fois par an si vie sexuelle active, ou à chaque nouveau partenaire) est important. Le VIH, la chlamydia ou la gonorrhée peuvent être asymptomatiques pendant des mois. Gratuit et anonyme dans les CeGIDD.` });
-    if (a.contraception === "Non" || a.contraception === "Je souhaite en parler") tips.push({ icon: "💊", title: "Contraception", text: `Il existe de nombreux moyens adaptés à chaque situation : pilule, stérilet, implant, anneau, patch, préservatif... Votre pharmacien peut vous informer et vous orienter vers la solution la mieux adaptée à votre profil.` });
-    // NOUVEAUX
-    if (a.sommeil_qualite === "Oui, souvent" || a.sommeil_qualite === "Je prends des somnifères" || a.sommeil_duree === "Moins de 6h") tips.push({ icon: "🌙", title: "Sommeil", text: `À votre âge, viser 7-9h par nuit est essentiel pour la mémoire, l'humeur et le système immunitaire. Quelques bases qui marchent : éviter les écrans 1h avant de dormir, garder une chambre fraîche (18-19°C), et se coucher/lever à heures fixes même le week-end. Côté naturel : magnésium bisglycinate (300 mg le soir), valériane ou passiflore en infusion. Si les somnifères deviennent réguliers, parlez-en à votre pharmacien — il existe des alternatives non-addictives.` });
-    if (a.mental === "Plus de 7 jours" || a.mental === "Presque tous les jours") tips.push({ icon: "🌿", title: "Anxiété", text: `Une anxiété qui dure mérite attention. Solutions naturelles efficaces : magnésium bisglycinate (300 mg/j), plantes adaptogènes (rhodiola, ashwagandha), respiration abdominale 5 min/j. Si les symptômes persistent au-delà de 2 semaines, consultez. Numéro national : 3114 (gratuit, 24h/24).` });
-    if (a.tristesse === "Plus de 7 jours" || a.tristesse === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `Une tristesse persistante n'est pas une faiblesse — c'est un signal. Vitamine D (en hiver surtout), oméga-3, lumière naturelle 30 min/j et activité physique régulière ont des effets prouvés sur le moral. Mais l'essentiel reste d'en parler — médecin traitant, psychologue, ou ligne d'écoute 3114 (gratuite, 24h/24).` });
-    if (a.idees_noires === "Oui, des idées noires" || a.idees_noires === "Oui, une tentative de suicide") tips.push({ icon: "🆘", title: "Soutien immédiat", text: `Vous n'êtes pas seul(e). Le 3114 est une ligne d'écoute nationale, gratuite, 24h/24, 7j/7, avec des professionnels formés. Parler à quelqu'un change vraiment les choses. Votre pharmacien peut aussi vous orienter discrètement vers un suivi adapté. Un médecin peut vous voir rapidement si vous le demandez.` });
-    if (a.violences === "Oui") tips.push({ icon: "🤝", title: "Violences", text: `Aucune violence n'est acceptable et vous n'êtes en aucun cas responsable. Plusieurs ressources confidentielles : 3919 (violences faites aux femmes, gratuit), 119 (enfance en danger), 3018 (cyber-harcèlement). Votre pharmacien peut vous orienter en toute discrétion vers les bons interlocuteurs.` });
+    if (a.dtp_18 === "Non" || a.dtp_18 === "Je ne sais pas") tips.push({ icon: "💉", title: "Rappel DTP", text: `Le rappel diphtérie-tétanos-polio est recommandé à 25 ans, puis tous les 20 ans. Votre pharmacien peut consulter votre carnet de santé et réaliser directement le rappel en officine, sans ordonnance.` });
+    if (a.coqueluche_18 === "Non" || a.coqueluche_18 === "Je ne sais pas") tips.push({ icon: "🛡️", title: "Rappel coqueluche", text: `Recommandé à 25 ans, surtout si vous prévoyez d'avoir des enfants ou êtes en contact avec des nourrissons. La coqueluche peut être grave pour les bébés non encore vaccinés.` });
+    if (a.hpv === "Non" || a.hpv === "Oui, partiel" || a.hpv === "Je ne sais pas") tips.push({ icon: "🛡️", title: "Vaccin HPV", text: `Le vaccin HPV protège contre des cancers graves (col, gorge, anus). Rattrapage possible jusqu'à 26 ans. Schéma : 3 doses Gardasil 9. Remboursé.` });
+    if (a.meningo_acwy === "Non" || a.meningo_acwy === "Je ne sais pas") tips.push({ icon: "💉", title: "Méningocoque ACWY", text: `Recommandé chez l'adulte jeune, surtout si vie en collectivité (résidence universitaire, etc.). Une injection. Administrable en officine.` });
+    if (a.meningo_b === "Non" || a.meningo_b === "Je ne sais pas") tips.push({ icon: "💉", title: "Méningocoque B", text: `Désormais recommandé chez l'adulte jeune. Schéma 2 doses. Protection contre une forme grave de méningite.` });
+    if (a.grippe_18 === "Oui mais non vacciné(e)") tips.push({ icon: "💉", title: "Vaccin grippe", text: `Avec votre pathologie, le vaccin grippe annuel est fortement recommandé. Gratuit, sans ordonnance, en pharmacie.` });
+    if (a.tabac === "Oui, je fume" || a.tabac === "Oui, cigarette électronique") tips.push({ icon: "🚭", title: "Tabac", text: `Arrêter à votre âge est l'une des meilleures décisions santé. Bénéfices rapides : haleine en 48h, souffle en 3 jours. Votre pharmacien peut proposer patchs/gommes adaptés. Tabac Info Service : 3989.` });
+    if (a.alcool === "Plus de 2 verres par jour" || a.alcool === "Plus de 10 verres par semaine") tips.push({ icon: "💧", title: "Alcool", text: `Repères : max 10 verres/sem, pas plus de 2/jour, minimum 2 jours sans alcool. Au-delà, risque significatif. Compléments naturels : desmodium, chardon-Marie. Alcool Info Service : 0 980 980 930.` });
+    if (a.substances && a.substances !== "Non") tips.push({ icon: "⚠️", title: "Substances", text: `Le cerveau se développe jusqu'à 25 ans. Impact possible sur mémoire et concentration. Drogues Info Service : 0 800 23 13 13.` });
+    if (a.ist === "Non" || a.ist === "Oui, il y a longtemps") tips.push({ icon: "🔬", title: "Dépistage MST", text: `1 fois par an si vie sexuelle active, ou à chaque nouveau partenaire. Gratuit et anonyme dans les CeGIDD.` });
+    if (a.contraception === "Non" || a.contraception === "Je souhaite en parler") tips.push({ icon: "💊", title: "Contraception", text: `Nombreux moyens adaptés : pilule, stérilet, implant, anneau, patch, préservatif. Votre pharmacien peut vous orienter.` });
+    if (a.sommeil_qualite === "Oui, souvent" || a.sommeil_qualite === "Je prends des somnifères" || a.sommeil_duree === "Moins de 6h") tips.push({ icon: "🌙", title: "Sommeil", text: `Viser 7-9h/nuit. Éviter écrans 1h avant, chambre fraîche (18-19°C), horaires fixes. Naturel : magnésium bisglycinate 300mg le soir, valériane/passiflore.` });
+    if (a.mental === "Plus de 7 jours" || a.mental === "Presque tous les jours") tips.push({ icon: "🌿", title: "Anxiété", text: `Solutions naturelles : magnésium bisglycinate (300mg/j), rhodiola, ashwagandha, respiration 5 min/j. Si persiste, consultez. 3114 (gratuit, 24/24).` });
+    if (a.tristesse === "Plus de 7 jours" || a.tristesse === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `Vitamine D (hiver), oméga-3, lumière naturelle, activité régulière. Parlez-en — médecin, psychologue, ou 3114.` });
+    if (a.idees_noires === "Oui, des idées noires" || a.idees_noires === "Oui, une tentative de suicide") tips.push({ icon: "🆘", title: "Soutien immédiat", text: `Vous n'êtes pas seul(e). Le 3114, ligne d'écoute nationale gratuite 24/24, 7j/7. Parler change vraiment les choses.` });
+    if (a.violences === "Oui") tips.push({ icon: "🤝", title: "Violences", text: `Aucune violence n'est acceptable. Ressources confidentielles : 3919 (femmes), 119 (enfance), 3018 (cyber).` });
   }
   if (age === "45-50") {
-    if (a.vaccins === "Non" || a.vaccins === "Je ne sais pas") tips.push({ icon: "💉", title: "Vaccins", text: `Le rappel tétanos-diphtérie est recommandé tous les 20 ans. Si vous avez du diabète, du surpoids ou une pathologie respiratoire, le vaccin contre la grippe est aussi conseillé. Votre pharmacien peut les administrer directement, sans ordonnance.` });
-    if (a.colorectal === "Non, jamais" || a.colorectal === "Oui, il y a longtemps" || a.colorectal === "Je ne sais pas") tips.push({ icon: "🎯", title: "Dépistage cancer du côlon", text: `Test simple à la maison en 5 minutes, recommandé tous les 2 ans entre 50 et 74 ans. Détecte 8 cancers du côlon sur 10 à un stade où la guérison est possible. Kit gratuit à la pharmacie, sans ordonnance.` });
-    if ((a.sein === "Non, jamais" || a.sein === "Oui, il y a longtemps") && sexe === "Une femme") tips.push({ icon: "🎀", title: "Mammographie", text: `Recommandée tous les 2 ans pour les femmes à partir de 50 ans. Permet de détecter les cancers du sein à un stade très précoce. Si vous n'avez pas reçu de convocation, contactez votre Caisse d'Assurance Maladie.` });
-    if ((a.col === "Non, jamais" || a.col === "Oui, il y a plus de 5 ans") && sexe === "Une femme") tips.push({ icon: "🔬", title: "Frottis cervical", text: `Recommandé tous les 5 ans entre 25 et 65 ans pour prévenir le cancer du col de l'utérus. À réaliser chez votre médecin, gynécologue ou sage-femme.` });
-    if (a.prise_sang === "Plus d'un an" || a.prise_sang === "Je ne sais pas") tips.push({ icon: "🩸", title: "Bilan sanguin", text: `Un bilan annuel est recommandé à votre âge pour détecter tôt diabète, hypercholestérolémie ou problème thyroïdien — qui peuvent évoluer silencieusement pendant des années. Parlez-en à votre médecin traitant.` });
-    if (a.activite === "Jamais" || a.activite === "1 à 2 fois") tips.push({ icon: "🏃", title: "Activité physique", text: `L'OMS recommande 150 min/semaine d'activité modérée. La marche rapide compte ! Ajoutez 2 séances de renforcement musculaire/semaine pour préserver muscles et os qui se fragilisent à votre âge.` });
-    if (a.sedentarite === "4 à 7 heures" || a.sedentarite === "Plus de 7 heures") tips.push({ icon: "🪑", title: "Sédentarité", text: `Rester assis longtemps augmente le risque cardiovasculaire indépendamment de l'activité physique. Levez-vous 2-3 minutes toutes les 30 minutes — petite marche, étirements, ou simplement debout au téléphone.` });
-    if (a.fruits === "Rarement ou jamais" || a.fruits === "Oui, 1 à 2 portions") tips.push({ icon: "🥗", title: "Alimentation", text: `5 fruits et légumes par jour reste la référence. Privilégiez légumes verts (épinards, brocolis) riches en folates, et fruits rouges très antioxydants. Le régime méditerranéen réduit significativement le risque cardiovasculaire.` });
-    if (a.gras_sucre === "Plusieurs fois par semaine" || a.gras_sucre === "Tous les jours") tips.push({ icon: "🍔", title: "Aliments ultra-transformés", text: `Les aliments ultra-transformés (charcuterie, sodas, fast-food) augmentent le risque cardiovasculaire et de diabète. Pas besoin de tout supprimer — augmentez le fait-maison avec des produits frais, un repas à la fois.` });
-    if (a.tabac_45 === "Oui, je fume" || a.tabac_45 === "Oui, cigarette électronique") tips.push({ icon: "🚭", title: "Tabac", text: `À 45 ans, le risque cardiovasculaire lié au tabac est élevé — mais bonne nouvelle : il se divise par deux en moins d'un an après l'arrêt. Substituts en combinaison (patch + gommes) = méthode la plus efficace. Tabac Info Service : 3989.` });
-    // NOUVEAUX
-    if (a.essouffle === "Oui, un peu" || a.essouffle === "Oui, nettement") tips.push({ icon: "🫁", title: "Essoufflement", text: `Un essoufflement inhabituel à votre âge mérite un avis médical — surtout si vous fumez ou avez fumé. Il peut s'agir simplement d'un manque d'activité, mais aussi d'un signal cardiaque ou respiratoire à explorer. Parlez-en à votre médecin traitant qui pourra demander un bilan adapté (spirométrie, ECG si besoin).` });
-    if (a.sommeil_45 === "Oui, souvent" || a.sommeil_45 === "Je prends des somnifères") tips.push({ icon: "🌙", title: "Sommeil", text: `Un sommeil de qualité préserve la santé cardiovasculaire et cognitive. Bases : éviter les écrans 1h avant le coucher, chambre fraîche (18-19°C), pas de café après 14h. Côté naturel : magnésium bisglycinate (300 mg le soir), mélatonine 1 mg si besoin de recaler le rythme. Si les somnifères durent depuis longtemps, votre pharmacien peut vous proposer un sevrage progressif accompagné — c'est important après 50 ans (impact mémoire, chutes).` });
-    if (a.anxiete_45 === "Plus de 7 jours" || a.anxiete_45 === "Presque tous les jours") tips.push({ icon: "🌿", title: "Anxiété", text: `L'anxiété chronique a un vrai impact sur la santé cardiovasculaire. Solutions naturelles : magnésium bisglycinate (300 mg/j), rhodiola ou ashwagandha (plantes adaptogènes), cohérence cardiaque (5 min × 3/j). Si ça dure, consultez — un médecin ou un psychologue peuvent vraiment aider.` });
-    if (a.tristesse_45 === "Plus de 7 jours" || a.tristesse_45 === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `Une tristesse persistante n'est pas à minimiser, surtout dans une période de vie souvent chargée (travail, parents âgés, ados). Activité physique régulière, vitamine D, oméga-3, et surtout en parler. Médecin traitant ou psychologue, c'est le bon réflexe. Ligne d'écoute 3114 (gratuite, 24h/24).` });
-    if (a.violences_45 === "Oui") tips.push({ icon: "🤝", title: "Violences", text: `Aucune violence n'est acceptable, peu importe le contexte. Plusieurs ressources confidentielles : 3919 (violences conjugales, gratuit), 119 (enfance en danger). Votre pharmacien et votre médecin sont tenus au secret professionnel et peuvent vous orienter en toute discrétion.` });
+    if (a.dtp_45 === "Non" || a.dtp_45 === "Je ne sais pas") tips.push({ icon: "💉", title: "Rappel DTP", text: `Rappel diphtérie-tétanos-polio recommandé à 45 ans. Votre pharmacien peut l'administrer directement (Repevax, Boostrixtetra).` });
+    if (a.coqueluche_45 === "Non" || a.coqueluche_45 === "Je ne sais pas") tips.push({ icon: "🛡️", title: "Coqueluche", text: `Rappel à 45 ans recommandé, surtout si contact avec nourrissons (grands-parents, profession santé). Souvent combiné au DTP.` });
+    if (a.grippe_45 === "Oui mais non vacciné(e)") tips.push({ icon: "💉", title: "Vaccin grippe", text: `Avec votre pathologie, vaccin grippe annuel fortement recommandé. Gratuit, sans ordonnance, en pharmacie.` });
+    if (a.covid_45 === "Non, à risque") tips.push({ icon: "🛡️", title: "Rappel Covid", text: `Si à risque (comorbidités), rappel annuel recommandé. Coadministrable avec la grippe en un seul passage.` });
+    if (a.colorectal === "Non, jamais" || a.colorectal === "Oui, il y a longtemps" || a.colorectal === "Je ne sais pas") tips.push({ icon: "🎯", title: "Dépistage cancer du côlon", text: `Test simple à domicile, recommandé tous les 2 ans entre 50 et 74 ans. Détecte 8 cancers/10 à un stade curable. Kit gratuit en pharmacie.` });
+    if ((a.sein === "Non, jamais" || a.sein === "Oui, il y a longtemps") && sexe === "Une femme") tips.push({ icon: "🎀", title: "Mammographie", text: `Recommandée tous les 2 ans à partir de 50 ans. Permet de détecter précocement un cancer du sein.` });
+    if ((a.col === "Non, jamais" || a.col === "Oui, il y a plus de 5 ans") && sexe === "Une femme") tips.push({ icon: "🔬", title: "Frottis cervical", text: `Tous les 5 ans entre 25 et 65 ans. À réaliser chez médecin, gynécologue ou sage-femme.` });
+    if (a.activite === "Jamais" || a.activite === "1 à 2 fois") tips.push({ icon: "🏃", title: "Activité physique", text: `OMS : 150 min/sem modérée + 2 séances renforcement musculaire/sem pour préserver muscles et os.` });
+    if (a.fruits === "Rarement ou jamais" || a.fruits === "Oui, 1 à 2 portions") tips.push({ icon: "🥗", title: "Alimentation", text: `5 fruits et légumes/jour. Régime méditerranéen réduit significativement le risque cardiovasculaire.` });
+    if (a.tabac_45 === "Oui, je fume" || a.tabac_45 === "Oui, cigarette électronique") tips.push({ icon: "🚭", title: "Tabac", text: `Risque cardiovasculaire élevé à 45 ans, mais se divise par 2 en moins d'un an après l'arrêt. Substituts en combinaison = plus efficace.` });
+    if (a.essouffle === "Oui, un peu" || a.essouffle === "Oui, nettement") tips.push({ icon: "🫁", title: "Essoufflement", text: `Un essoufflement inhabituel mérite un avis médical, surtout si tabagisme. Bilan adapté possible (spirométrie, ECG).` });
+    if (a.sommeil_45 === "Oui, souvent" || a.sommeil_45 === "Je prends des somnifères") tips.push({ icon: "🌙", title: "Sommeil", text: `Sommeil de qualité = santé cardio et cognitive. Magnésium bisglycinate 300mg le soir. Si somnifères au long cours, parlez-en — sevrage progressif possible.` });
+    if (a.anxiete_45 === "Plus de 7 jours" || a.anxiete_45 === "Presque tous les jours") tips.push({ icon: "🌿", title: "Anxiété", text: `Magnésium bisglycinate, rhodiola/ashwagandha, cohérence cardiaque. Si ça dure, consultez.` });
+    if (a.tristesse_45 === "Plus de 7 jours" || a.tristesse_45 === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `Tristesse persistante à ne pas minimiser. Activité, vitamine D, oméga-3, et en parler. 3114 (gratuit, 24/24).` });
+    if (a.violences_45 === "Oui") tips.push({ icon: "🤝", title: "Violences", text: `Aucune violence n'est acceptable. 3919, 119. Votre pharmacien et médecin sont tenus au secret professionnel.` });
   }
   if (age === "60-65") {
-    if (a.grippe !== "Oui") tips.push({ icon: "💉", title: "Grippe — Vaccin recommandé", text: `Après 60 ans, la grippe peut entraîner des complications graves. Ce vaccin, à renouveler chaque automne, réduit de 40 à 70% le risque d'hospitalisation. Gratuit et administrable directement en pharmacie.` });
-    if (a.covid !== "Oui") tips.push({ icon: "🛡️", title: "Covid-19 — Rappel", text: `Un rappel régulier reste recommandé après 60 ans. Peut être fait en même temps que la grippe, lors d'un seul passage en pharmacie.` });
-    if (a.zona !== "Oui, les 2 injections") tips.push({ icon: "🔥", title: "Zona", text: a.zona === "Oui, seulement la 1ère injection" ? `Vous avez fait la 1ère injection. La 2ème dose est indispensable (à faire dans les 2 à 6 mois) pour atteindre la protection optimale (>90%).` : `Le zona touche 1 personne sur 3 après 60 ans. Maladie très douloureuse pouvant laisser des séquelles. Le vaccin Shingrix (2 injections espacées de 2 à 6 mois) offre une protection >90%.` });
-    if (a.pneumo !== "Oui") tips.push({ icon: "🫁", title: "Pneumonies bactériennes", text: `Le vaccin Prevenar 20® protège contre 20 souches de pneumocoques — 2ème cause d'hospitalisation hivernale après 60 ans. Une seule injection à vie. Coadministrable avec la grippe.` });
-    if (a.dtp_60 === "Non ou je ne sais pas") tips.push({ icon: "📋", title: "Rappel tétanos", text: `Après 65 ans, rappel DTP recommandé tous les 10 ans. Le tétanos reste grave et touche principalement les seniors non à jour. Votre pharmacien peut faire le rappel.` });
-    if (a.colorectal_60 === "Non, jamais" || a.colorectal_60 === "Oui, il y a longtemps" || a.colorectal_60 === "Je ne sais pas") tips.push({ icon: "🎯", title: "Dépistage cancer du côlon", text: `Test à la maison (5 min), recommandé tous les 2 ans entre 50 et 74 ans. Détecte 8 cancers sur 10 à un stade où la guérison est possible dans plus de 90% des cas. Kit gratuit en pharmacie.` });
-    if ((a.mammo_60 === "Non, jamais" || a.mammo_60 === "Oui, il y a longtemps") && sexe === "Une femme") tips.push({ icon: "🎀", title: "Mammographie", text: `Recommandée tous les 2 ans jusqu'à 74 ans. Reste l'examen le plus efficace pour détecter précocement un cancer du sein.` });
-    if (a.medicaments_60 === "5 à 6 médicaments" || a.medicaments_60 === "7 ou plus") tips.push({ icon: "💊", title: "Suivi de vos médicaments", text: `Avec ${a.medicaments_60.toLowerCase()}, certains peuvent interagir ou devenir moins adaptés avec l'âge. Un point approfondi avec votre pharmacien (gratuit, en espace confidentiel) peut identifier des ajustements possibles.` });
-    if (a.effets === "Oui, assez souvent" || a.effets === "Oui, et cela me préoccupe") tips.push({ icon: "⚠️", title: "Effets gênants", text: `Les effets gênants méritent attention — ce n'est pas "normal" de devoir s'y résigner. Souvent, des médicaments peuvent être remplacés ou leurs doses ajustées pour améliorer votre confort.` });
-    if (a.chutes_60 && a.chutes_60 !== "Non") tips.push({ icon: "🦴", title: "Prévention des chutes", text: `Une chute mérite attention. Vitamine D (800-1000 UI/j — manque très fréquent), vue à vérifier, chaussures fermées antidérapantes, sécuriser le domicile. Un kinésithérapeute peut proposer un programme d'équilibre.` });
-    // NOUVEAUX
-    if (a.activite_60 === "Jamais" || a.activite_60 === "1 à 2 fois") tips.push({ icon: "🏃", title: "Activité physique", text: `Après 60 ans, l'activité physique est l'un des meilleurs traitements préventifs : elle protège la mémoire, l'équilibre, le cœur et l'humeur. Objectif : 30 min/jour, même fragmenté (3 × 10 min). La marche, le jardinage, le ménage comptent. Ajoutez 2 fois/semaine du renforcement musculaire (ex : se lever d'une chaise sans les bras × 10) pour préserver vos muscles.` });
-    if (a.fruits_60 === "De temps en temps" || a.fruits_60 === "Rarement ou jamais") tips.push({ icon: "🥗", title: "Alimentation", text: `Après 60 ans, les besoins en protéines, calcium et vitamine D augmentent. Privilégiez : légumes verts (folates), poissons gras 2×/semaine (oméga-3), protéines à chaque repas (œufs, légumineuses, viande blanche). Hydratez-vous bien (1,5 L/j) — la sensation de soif diminue avec l'âge.` });
-    if (a.memoire_60 === "Oui, un peu" || a.memoire_60 === "Oui, et cela me préoccupe") tips.push({ icon: "🧠", title: "Mémoire", text: `Quelques oublis peuvent être normaux, mais s'ils se multiplient ou vous inquiètent, parlez-en à votre médecin — un bilan simple permet d'écarter une cause traitable (carence en B12, thyroïde, dépression, somnifères). Pour entretenir la mémoire : sommeil de qualité, activité physique, lien social, lecture, jeux de logique. Oméga-3 et vitamine D ont aussi un effet protecteur.` });
-    if (a.sommeil_60 === "Oui, souvent" || a.sommeil_60 === "Je prends des somnifères") tips.push({ icon: "🌙", title: "Sommeil", text: `Le sommeil change avec l'âge — c'est normal de dormir un peu moins, mais pas de moins bien. Évitez les écrans avant le coucher, gardez la chambre fraîche, limitez le café après midi. Si vous prenez des somnifères depuis longtemps, c'est important d'en discuter : ils augmentent le risque de chutes et de troubles de mémoire après 60 ans. Votre pharmacien peut proposer un sevrage progressif et accompagné.` });
-    if (a.moral_60 === "Plus de 7 jours" || a.moral_60 === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `À l'approche ou au début de la retraite, la baisse de moral est fréquente — perte de repères, isolement, questions sur le sens. Ce n'est pas un passage obligé. Maintenir des liens sociaux, des projets (associations, bénévolat, activités), de l'activité physique et un bon sommeil aide énormément. N'hésitez pas à en parler à votre médecin — la vitamine D peut aussi jouer un rôle. Ligne d'écoute 3114 (gratuite, 24h/24).` });
+    if (a.grippe !== "Oui") tips.push({ icon: "💉", title: "Grippe", text: `Après 60 ans, la grippe peut être grave. Vaccin annuel automnal, réduit de 40-70% le risque d'hospitalisation. Gratuit, en pharmacie.` });
+    if (a.covid !== "Oui") tips.push({ icon: "🛡️", title: "Covid-19", text: `Rappel recommandé après 60 ans. Coadministrable avec la grippe en un seul passage.` });
+    if (a.zona !== "Oui, les 2 injections") tips.push({ icon: "🔥", title: "Zona", text: a.zona === "Oui, seulement la 1ère" ? `2ème dose Shingrix indispensable (à faire dans les 2 à 6 mois) pour atteindre la protection optimale.` : `1 personne sur 3 touchée après 60 ans. Vaccin Shingrix (2 injections), protection >90%.` });
+    if (a.pneumo !== "Oui") tips.push({ icon: "🫁", title: "Pneumocoque", text: `Prevenar 20 protège contre 20 souches, 2ème cause d'hospitalisation hivernale après 60 ans. Une injection à vie.` });
+    if (a.dtp_60 === "Non ou je ne sais pas") tips.push({ icon: "📋", title: "Rappel DTP", text: `Recommandé à 65 ans, puis tous les 10 ans. Votre pharmacien peut faire le rappel directement.` });
+    if (a.rsv_60 === "Non" || a.rsv_60 === "Je ne sais pas ce que c'est") tips.push({ icon: "💉", title: "VRS", text: `Le virus respiratoire syncytial cause des bronchiolites graves chez les seniors. Vaccins Abrysvo/Arexvy recommandés. Une injection.` });
+    if (a.colorectal_60 === "Non, jamais" || a.colorectal_60 === "Oui, il y a longtemps" || a.colorectal_60 === "Je ne sais pas") tips.push({ icon: "🎯", title: "Dépistage côlon", text: `Tous les 2 ans entre 50 et 74 ans. Kit gratuit en pharmacie. Détecte 8 cancers/10 à un stade curable.` });
+    if ((a.mammo_60 === "Non, jamais" || a.mammo_60 === "Oui, il y a longtemps") && sexe === "Une femme") tips.push({ icon: "🎀", title: "Mammographie", text: `Tous les 2 ans jusqu'à 74 ans. Examen le plus efficace pour détecter précocement un cancer du sein.` });
+    if (a.medicaments_60 === "5 à 6 médicaments" || a.medicaments_60 === "7 ou plus") tips.push({ icon: "💊", title: "Suivi médicaments", text: `Avec ${a.medicaments_60.toLowerCase()}, certains peuvent interagir. Un point avec votre pharmacien (gratuit) peut identifier des ajustements.` });
+    if (a.effets === "Oui, assez souvent" || a.effets === "Oui, et cela me préoccupe") tips.push({ icon: "⚠️", title: "Effets gênants", text: `Pas "normal" de devoir s'y résigner. Médicaments souvent remplaçables ou ajustables.` });
+    if (a.chutes_60 && a.chutes_60 !== "Non") tips.push({ icon: "🦴", title: "Chutes", text: `Vitamine D (800-1000 UI/j), vue à vérifier, chaussures fermées, domicile sécurisé. Kiné équilibre possible.` });
+    if (a.activite_60 === "Jamais" || a.activite_60 === "1 à 2 fois") tips.push({ icon: "🏃", title: "Activité", text: `Après 60 ans : protège mémoire, équilibre, cœur, humeur. 30 min/j même fragmenté. Marche, jardinage, ménage comptent.` });
+    if (a.fruits_60 === "De temps en temps" || a.fruits_60 === "Rarement ou jamais") tips.push({ icon: "🥗", title: "Alimentation", text: `Besoins en protéines, calcium et vitamine D augmentent. Poissons gras 2x/sem, légumes verts, hydratation 1,5L/j.` });
+    if (a.memoire_60 === "Oui, un peu" || a.memoire_60 === "Oui, et cela me préoccupe") tips.push({ icon: "🧠", title: "Mémoire", text: `Si ça vous inquiète, parlez-en au médecin. Causes traitables possibles (B12, thyroïde, dépression). Oméga-3 et vitamine D protègent.` });
+    if (a.sommeil_60 === "Oui, souvent" || a.sommeil_60 === "Je prends des somnifères") tips.push({ icon: "🌙", title: "Sommeil", text: `Normal de dormir un peu moins, pas de moins bien. Si somnifères au long cours, sevrage progressif important après 60 ans (chutes, mémoire).` });
+    if (a.moral_60 === "Plus de 7 jours" || a.moral_60 === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `Baisse de moral à l'approche/début retraite fréquente. Liens sociaux, projets, activité physique aident. 3114.` });
   }
   if (age === "70-75") {
-    if (a.grippe_70 !== "Oui") tips.push({ icon: "💉", title: "Grippe — Priorité absolue", text: `Après 70 ans, la grippe peut être très grave. Ce vaccin annuel réduit de 40 à 70% le risque d'hospitalisation. Gratuit, sans ordonnance, directement en pharmacie. C'est probablement le geste de prévention le plus important à votre âge.` });
-    if (a.covid_70 !== "Oui") tips.push({ icon: "🛡️", title: "Covid-19 — Rappel", text: `Un rappel régulier est fortement recommandé après 70 ans pour prévenir les formes graves. Peut être fait avec la grippe lors du même passage.` });
-    if (a.zona_70 !== "Oui, les 2 injections") tips.push({ icon: "🔥", title: "Zona", text: a.zona_70 === "Oui, seulement la 1ère injection" ? `Vous avez fait la 1ère injection. La 2ème (à faire dans les 2 à 6 mois) est indispensable pour vous protéger pleinement.` : `Le zona est particulièrement douloureux après 70 ans et peut laisser des séquelles nerveuses durables. Le vaccin Shingrix (2 injections) protège efficacement à plus de 90%.` });
-    if (a.pneumo_70 !== "Oui") tips.push({ icon: "🫁", title: "Pneumonies bactériennes", text: `Le vaccin Prevenar 20® protège contre des pneumonies graves, particulièrement dangereuses après 70 ans. Une seule injection à vie.` });
-    if (a.dtp_70 === "Non ou je ne sais pas") tips.push({ icon: "📋", title: "Rappel tétanos", text: `Rappel tous les 10 ans recommandé. Le tétanos reste dangereux, surtout après une blessure mineure (jardinage). Administrable en pharmacie.` });
-    if (a.medicaments_70 === "5 à 6 médicaments" || a.medicaments_70 === "7 à 9 médicaments" || a.medicaments_70 === "10 ou plus") tips.push({ icon: "💊", title: "Suivi de vos médicaments", text: `Avec ${a.medicaments_70.toLowerCase()}, une révision complète avec votre pharmacien (gratuit, 30-45 min en espace confidentiel) peut vraiment améliorer votre quotidien. Certains médicaments deviennent moins adaptés après 70 ans.` });
-    if (a.observance === "Parfois (1 fois/semaine)" || a.observance === "Souvent") tips.push({ icon: "📅", title: "Oublis", text: `Un semainier (pilulier hebdomadaire) change vraiment les choses. Votre pharmacien peut vous en proposer un, voire le préparer pour vous chaque semaine.` });
-    if (a.colorectal_70 === "Non, jamais" || a.colorectal_70 === "Oui, il y a longtemps" || a.colorectal_70 === "Je ne sais pas") tips.push({ icon: "🎯", title: "Dépistage cancer du côlon", text: `Recommandé jusqu'à 74 ans. Test à la maison, kit gratuit en pharmacie. Détecte les cancers très tôt, à un stade où ils se soignent dans plus de 90% des cas.` });
-    if (a.chutes_70 && a.chutes_70 !== "Non") tips.push({ icon: "🦴", title: "Prévention des chutes", text: `Après une chute, consultez votre médecin. Vitamine D systématique (1000 UI/j), vérification de la vue, sécurisation du domicile. Un kinésithérapeute peut proposer un programme d'équilibre adapté.` });
-    if (a.autonomie && a.autonomie !== "Non, aucune difficulté") tips.push({ icon: "🏠", title: "Maintien à domicile", text: `Des aides existent : APA (financement aide à domicile), portage de repas, livraison médicaments, téléassistance. Votre pharmacien peut vous orienter. Important d'anticiper plutôt que d'attendre.` });
-    // NOUVEAUX
-    if (a.activite_70 === "Jamais" || a.activite_70 === "1 à 2 fois") tips.push({ icon: "🏃", title: "Activité physique", text: `À votre âge, bouger est l'un des meilleurs gestes préventifs : ça maintient l'équilibre (donc évite les chutes), la mémoire et le moral. Pas besoin d'en faire beaucoup : 30 min de marche par jour, même fragmenté, suffit. Ajoutez quelques mouvements de renforcement (se lever d'une chaise × 10, monter sur la pointe des pieds × 10) pour préserver vos muscles. Un kinésithérapeute peut proposer un programme adapté, pris en charge.` });
-    if (a.fruits_70 === "De temps en temps" || a.fruits_70 === "Rarement ou jamais") tips.push({ icon: "🥗", title: "Alimentation", text: `Après 70 ans, le risque de dénutrition augmente — c'est aussi grave que le surpoids. Pensez aux protéines à chaque repas (œufs, fromage, viande, poisson, légumineuses), aux poissons gras 2×/semaine (oméga-3), et hydratez-vous régulièrement (1,5 L/j) même sans soif. Si l'appétit baisse, fractionnez : 5 petits repas plutôt que 3 gros.` });
-    if (a.logement_70 === "En partie" || a.logement_70 === "Non, pas vraiment" || a.logement_70 === "Je ne sais pas") tips.push({ icon: "🏡", title: "Logement & chutes", text: `1 chute sur 3 après 70 ans entraîne une perte d'autonomie. Quelques aménagements simples font une vraie différence : barres d'appui dans la douche/WC, tapis antidérapants, éclairage suffisant la nuit, désencombrement des passages. Soliha et certaines aides (ANAH, caisse de retraite) financent ces travaux. Votre pharmacien peut vous orienter.` });
-    if (a.memoire_70 === "Oui, un peu" || a.memoire_70 === "Oui, et cela me préoccupe") tips.push({ icon: "🧠", title: "Mémoire", text: `Si les oublis vous préoccupent, parlez-en à votre médecin — un bilan simple peut écarter des causes traitables (carence en B12, thyroïde, dépression, certains médicaments). Pour soutenir la mémoire : sommeil de qualité, activité physique régulière, lien social, lecture, mots croisés. Vitamine D et oméga-3 ont un effet protecteur démontré.` });
-    if (a.moral_70 === "Plus de 7 jours" || a.moral_70 === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `La baisse de moral n'est jamais "normale avec l'âge" — c'est un signal qui mérite attention. Souvent, plusieurs facteurs s'additionnent : isolement, douleurs, médicaments, sommeil. Maintenir des liens (famille, voisins, associations, club du 3ème âge) fait une vraie différence. Parlez-en à votre médecin — vitamine D, ajustement de traitements et parfois suivi psy aident vraiment. Ligne d'écoute 3114 (gratuite, 24h/24).` });
+    if (a.grippe_70 !== "Oui") tips.push({ icon: "💉", title: "Grippe", text: `Vaccin haute dose Efluelda recommandé après 70 ans. Réduit de 40-70% le risque d'hospitalisation. Probablement le geste préventif le plus important.` });
+    if (a.covid_70 !== "Oui") tips.push({ icon: "🛡️", title: "Covid-19", text: `Rappel fortement recommandé après 70 ans pour prévenir formes graves. Coadministrable grippe.` });
+    if (a.zona_70 !== "Oui, les 2 injections") tips.push({ icon: "🔥", title: "Zona", text: a.zona_70 === "Oui, seulement la 1ère" ? `2ème dose Shingrix à faire dans les 2-6 mois.` : `Particulièrement douloureux après 70 ans avec séquelles nerveuses. Shingrix 2 doses, protection >90%.` });
+    if (a.pneumo_70 !== "Oui") tips.push({ icon: "🫁", title: "Pneumocoque", text: `Prevenar 20 protège contre pneumonies graves. 2ème cause d'hospitalisation hivernale après 70 ans.` });
+    if (a.dtp_70 === "Non ou je ne sais pas") tips.push({ icon: "📋", title: "DTP", text: `Tous les 10 ans. Tétanos reste dangereux, surtout après blessure mineure (jardinage). En pharmacie.` });
+    if (a.rsv_70 === "Non" || a.rsv_70 === "Je ne sais pas ce que c'est") tips.push({ icon: "💉", title: "VRS", text: `Le VRS cause des bronchiolites graves chez les seniors. Vaccins Abrysvo/Arexvy fortement recommandés après 70 ans. Une injection.` });
+    if (a.coqueluche_70 === "Non" || a.coqueluche_70 === "Je ne sais pas") tips.push({ icon: "🛡️", title: "Coqueluche", text: `Rappel recommandé, surtout si contact avec petits-enfants. La coqueluche peut être grave pour les nourrissons.` });
+    const manyMeds = a.medicaments_70 === "5 à 6 médicaments" || a.medicaments_70 === "7 à 9 médicaments" || a.medicaments_70 === "10 ou plus";
+    if (manyMeds) tips.push({ icon: "💊", title: "Médicaments", text: `Avec ${a.medicaments_70.toLowerCase()}, révision avec votre pharmacien (gratuit, 30-45 min) peut améliorer votre quotidien.` });
+    if (a.observance === "Parfois (1 fois/semaine)" || a.observance === "Souvent") tips.push({ icon: "📅", title: "Oublis", text: `Un semainier (pilulier) change vraiment les choses. Votre pharmacien peut vous en proposer un.` });
+    if (a.effets_70 === "Oui, assez souvent" || a.effets_70 === "Oui, et cela me préoccupe") tips.push({ icon: "⚠️", title: "Effets gênants", text: `Effets méritent attention. Médicaments souvent ajustables. Parlez-en à votre pharmacien.` });
+    if (a.chutes_70 && a.chutes_70 !== "Non") tips.push({ icon: "🦴", title: "Chutes", text: `Vitamine D 1000 UI/j systématique, vue, domicile sécurisé. Kiné équilibre. Important à votre âge.` });
+    if (a.autonomie && a.autonomie !== "Non, aucune difficulté") tips.push({ icon: "🏠", title: "Maintien à domicile", text: `Aides existent : APA, aide à domicile, livraison médicaments, téléassistance. Anticiper plutôt qu'attendre.` });
+    if (a.activite_70 === "Jamais" || a.activite_70 === "1 à 2 fois") tips.push({ icon: "🏃", title: "Activité", text: `Maintient équilibre (évite chutes), mémoire, moral. 30 min/j de marche suffit. Kiné peut proposer programme adapté.` });
+    if (a.fruits_70 === "De temps en temps" || a.fruits_70 === "Rarement ou jamais") tips.push({ icon: "🥗", title: "Alimentation", text: `Risque de dénutrition après 70 ans. Protéines à chaque repas (œufs, fromage, poisson). Hydratation 1,5L/j même sans soif.` });
+    if (a.logement_70 === "En partie" || a.logement_70 === "Non, pas vraiment" || a.logement_70 === "Je ne sais pas") tips.push({ icon: "🏡", title: "Logement", text: `1 chute/3 entraîne perte d'autonomie après 70 ans. Barres, douche italienne, éclairage. Soliha et ANAH financent ces travaux.` });
+    if (a.memoire_70 === "Oui, un peu" || a.memoire_70 === "Oui, et cela me préoccupe") tips.push({ icon: "🧠", title: "Mémoire", text: `Causes traitables possibles (B12, thyroïde, dépression). Sommeil, activité, lien social protègent. Vitamine D et oméga-3 démontrés.` });
+    if (a.moral_70 === "Plus de 7 jours" || a.moral_70 === "Presque tous les jours") tips.push({ icon: "💙", title: "Bien-être mental", text: `Jamais "normal avec l'âge". Liens sociaux, médecin, parfois ajustement de traitements. 3114 (gratuit, 24/24).` });
   }
-  if (tips.length === 0) tips.push({ icon: "✨", title: "Bilan encourageant", text: `Vos réponses sont globalement rassurantes, ${prenom}. Continuez à prendre soin de vous et n'hésitez pas à solliciter votre équipe de pharmacie pour tout conseil de prévention.` });
+  if (tips.length === 0) tips.push({ icon: "✨", title: "Bilan encourageant", text: `Vos réponses sont globalement rassurantes, ${prenom}. Continuez à prendre soin de vous et n'hésitez pas à solliciter votre équipe de pharmacie.` });
   return tips;
 }
 
 // ═══════════════════════════════════════════════════════════
-// RECOMMANDATIONS PHARMACIEN V7
+// RECOMMANDATIONS PHARMACIEN V8
 // ═══════════════════════════════════════════════════════════
 function getPharmacistReco(age, a, sexe) {
   const items = [];
   if (age === "18-25") {
-    if (a.tabac === "Oui, je fume") items.push({ theme: "Conduites addictives", priority: true, label: "Sevrage tabagique", detail: "Patient fumeur actif. Évaluation Fagerström. Substituts nicotiniques en combinaison (patch 21mg/24h + gommes 2mg). Prescription possible par pharmacien. Suivi à 1 mois." });
-    if (a.alcool === "Plus de 2 verres par jour" || a.alcool === "Plus de 10 verres par semaine" || a.binge === "Souvent" || a.binge === "Parfois") items.push({ theme: "Conduites addictives", priority: true, label: "Consommation d'alcool à risque", detail: "Dépassement repères OMS. Entretien motivationnel bref. Objectifs progressifs (2 jours sans alcool/sem). Orienter CSAPA si dépendance suspectée." });
-    if (a.substances && a.substances !== "Non") items.push({ theme: "Conduites addictives", priority: true, label: "Consommation de substances", detail: `${a.substances}. Entretien confidentiel. Évaluer fréquence, contexte, polyconsommation. Orientation CSAPA ou Consultation Jeunes Consommateurs si usage régulier.` });
-    if (a.jeux === "Oui, souvent") items.push({ theme: "Conduites addictives", priority: false, label: "Pratique de jeux fréquente", detail: "Évaluer caractère pathologique. Orientation Joueurs Info Service : 09 74 75 13 13." });
-    if (a.vaccins_base === "Non" || a.vaccins_base === "Je ne sais pas") items.push({ theme: "Vaccination & santé sexuelle", priority: true, label: "Statut DTP à vérifier", detail: "Demander carnet vaccinal. Si rappel >20 ans : administration officine sans ordonnance (Repevax®, Boostrixtetra®). Vérifier méningocoque ACWY." });
-    if (a.hpv === "Non" || a.hpv === "Je ne sais pas") items.push({ theme: "Vaccination & santé sexuelle", priority: true, label: "Vaccin HPV à proposer", detail: "Rattrapage jusqu'à 26 ans. Schéma 3 doses (M0, M2, M6) Gardasil 9®. Remboursé. Administration officine sur prescription pharmacien." });
-    if (a.ist === "Non") items.push({ theme: "Vaccination & santé sexuelle", priority: false, label: "Dépistage MST à orienter", detail: "Pas de dépistage récent. Orienter CeGIDD ou TROD HIV/VHC en officine. Bilan : VIH, VHB, VHC, syphilis, chlamydia, gonocoque." });
-    if (a.contraception === "Non" && sexe === "Une femme") items.push({ theme: "Vaccination & santé sexuelle", priority: false, label: "Absence de contraception", detail: "Contraception d'urgence disponible sans ordonnance. Orienter consultation gynécologique pour solution adaptée long terme." });
-    // NOUVEAUX
-    if (a.sommeil_qualite === "Oui, souvent" || a.sommeil_qualite === "Je prends des somnifères" || a.sommeil_duree === "Moins de 6h") items.push({ theme: "Sommeil & bien-être mental", priority: false, label: "Troubles du sommeil", detail: "Hygiène de sommeil à renforcer. Magnésium bisglycinate 300mg le soir, valériane/passiflore. Si BZD : évaluer durée, risque dépendance, sevrage progressif si pertinent." });
-    if (a.mental === "Plus de 7 jours" || a.mental === "Presque tous les jours" || a.tristesse === "Plus de 7 jours" || a.tristesse === "Presque tous les jours") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Détresse psychologique (GAD-2/PHQ-2)", detail: "Symptômes anxio-dépressifs significatifs. Orienter médecin traitant rapidement. Magnésium 300mg/j court terme. Évaluer IS." });
-    if (a.idees_noires === "Oui, des idées noires" || a.idees_noires === "Oui, une tentative de suicide") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Idées suicidaires — URGENT", detail: "Patient avec idéation suicidaire. Orientation immédiate : 3114 (numéro national prévention suicide), médecin traitant en urgence, ou SAU si crise aiguë. Ne pas laisser repartir sans relais." });
-    if (a.violences === "Oui") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Antécédent de violences", detail: "Entretien confidentiel. Orienter selon contexte : 3919 (violences faites aux femmes), 119 (enfance), 3018 (cyber). Réseau pluridisciplinaire (médecin, psychologue, association) si besoin." });
+    if (a.dtp_18 === "Non" || a.dtp_18 === "Je ne sais pas") items.push({ theme: "Vaccination", priority: true, label: "Rappel DTP à 25 ans", detail: "Repevax® ou Boostrixtetra® en officine. Administration sans ordonnance par pharmacien." });
+    if (a.coqueluche_18 === "Non" || a.coqueluche_18 === "Je ne sais pas") items.push({ theme: "Vaccination", priority: true, label: "Rappel coqueluche", detail: "Boostrixtetra® (combiné DTP-coqueluche). Particulièrement important si projet parental ou contact nourrissons." });
+    if (a.hpv === "Non" || a.hpv === "Oui, partiel" || a.hpv === "Je ne sais pas") items.push({ theme: "Vaccination", priority: true, label: "Vaccin HPV", detail: "Rattrapage jusqu'à 26 ans. Schéma 3 doses (M0, M2, M6) Gardasil 9®. Remboursé. Administration officine sur prescription pharmacien." });
+    if (a.meningo_acwy === "Non" || a.meningo_acwy === "Je ne sais pas") items.push({ theme: "Vaccination", priority: false, label: "Méningocoque ACWY", detail: "Recommandé chez adulte jeune. Nimenrix® ou Menveo®. Une injection." });
+    if (a.meningo_b === "Non" || a.meningo_b === "Je ne sais pas") items.push({ theme: "Vaccination", priority: false, label: "Méningocoque B", detail: "Bexsero® - schéma 2 doses. Désormais recommandé chez l'adulte jeune." });
+    if (a.grippe_18 === "Oui mais non vacciné(e)") items.push({ theme: "Vaccination", priority: true, label: "Vaccin grippe", detail: "Patient avec comorbidité non vacciné. Influvac Tetra® ou Vaxigrip Tetra®. Remboursé 100%." });
+    if (a.tabac === "Oui, je fume") items.push({ theme: "Conduites addictives & santé sexuelle", priority: true, label: "Sevrage tabagique", detail: "Évaluation Fagerström. Substituts en combinaison (patch 21mg/24h + gommes 2mg). Prescription pharmacien possible." });
+    if (a.alcool === "Plus de 2 verres par jour" || a.alcool === "Plus de 10 verres par semaine") items.push({ theme: "Conduites addictives & santé sexuelle", priority: true, label: "Consommation alcool à risque", detail: "Dépassement repères OMS. Entretien motivationnel. Orienter CSAPA si dépendance." });
+    if (a.substances && a.substances !== "Non") items.push({ theme: "Conduites addictives & santé sexuelle", priority: true, label: "Consommation substances", detail: `${a.substances}. Évaluer fréquence, polyconsommation. Orientation CSAPA ou Consultation Jeunes Consommateurs.` });
+    if (a.ist === "Non") items.push({ theme: "Conduites addictives & santé sexuelle", priority: false, label: "Dépistage MST à orienter", detail: "Orienter CeGIDD ou TROD HIV/VHC en officine. Bilan VIH, VHB, VHC, syphilis, chlamydia, gonocoque." });
+    if (a.contraception === "Non" && sexe === "Une femme") items.push({ theme: "Conduites addictives & santé sexuelle", priority: false, label: "Absence de contraception", detail: "Contraception d'urgence dispo sans ordonnance. Orienter gynécologue pour solution long terme." });
+    if (a.sommeil_qualite === "Oui, souvent" || a.sommeil_qualite === "Je prends des somnifères" || a.sommeil_duree === "Moins de 6h") items.push({ theme: "Sommeil & bien-être mental", priority: false, label: "Troubles du sommeil", detail: "Hygiène de sommeil à renforcer. Magnésium bisglycinate 300mg. Si BZD, évaluer dépendance et sevrage." });
+    if (a.mental === "Plus de 7 jours" || a.mental === "Presque tous les jours" || a.tristesse === "Plus de 7 jours" || a.tristesse === "Presque tous les jours") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Détresse psychologique (GAD-2/PHQ-2)", detail: "Symptômes anxio-dépressifs significatifs. Orienter médecin traitant rapidement. Évaluer IS." });
+    if (a.idees_noires === "Oui, des idées noires" || a.idees_noires === "Oui, une tentative de suicide") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Idées suicidaires — URGENT", detail: "Orientation immédiate : 3114, médecin traitant en urgence, ou SAU si crise. Ne pas laisser repartir sans relais." });
+    if (a.violences === "Oui") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Antécédent de violences", detail: "Entretien confidentiel. Orienter 3919, 119, 3018 selon contexte. Réseau pluridisciplinaire." });
   }
   if (age === "45-50") {
-    if (a.vaccins === "Non" || a.vaccins === "Je ne sais pas") items.push({ theme: "Vaccination & dépistages", priority: true, label: "Rappel DTP à vérifier", detail: "Vérifier carnet. Si >20 ans : Repevax® ou Boostrixtetra® en officine. Évaluer indication grippe selon comorbidités." });
-    if (a.colorectal === "Non, jamais" || a.colorectal === "Oui, il y a longtemps" || a.colorectal === "Je ne sais pas") items.push({ theme: "Vaccination & dépistages", priority: true, label: "Kit dépistage colorectal — À remettre", detail: "Patient éligible (50-74 ans). Kit immunologique au comptoir avec explications. Sans ordonnance." });
-    if ((a.sein === "Non, jamais" || a.sein === "Oui, il y a longtemps") && sexe === "Une femme") items.push({ theme: "Vaccination & dépistages", priority: true, label: "Mammographie — À orienter", detail: "Dépistage organisé non réalisé. Orienter CPAM (convocation) ou médecin traitant. Pris en charge à 100%." });
-    if ((a.col === "Non, jamais" || a.col === "Oui, il y a plus de 5 ans") && sexe === "Une femme") items.push({ theme: "Vaccination & dépistages", priority: false, label: "Frottis cervical — À orienter", detail: "Dépistage en retard. Orienter médecin/gynécologue/sage-femme. Tous les 5 ans entre 25 et 65 ans." });
-    if (a.prise_sang === "Plus d'un an" || a.prise_sang === "Je ne sais pas") items.push({ theme: "Vaccination & dépistages", priority: false, label: "Bilan sanguin annuel", detail: "Pas de bilan récent. Orienter médecin traitant : NFS, glycémie à jeun, bilan lipidique, TSH, créatinine." });
-    if (a.activite === "Jamais" || a.activite === "1 à 2 fois") items.push({ theme: "Activité physique & alimentation", priority: false, label: "Activité physique insuffisante", detail: "OMS : 150 min/semaine modérée + 2 séances renforcement. Conseils hygiéno-diététiques à renforcer." });
-    if (a.sedentarite === "4 à 7 heures" || a.sedentarite === "Plus de 7 heures") items.push({ theme: "Activité physique & alimentation", priority: false, label: "Sédentarité importante", detail: "Risque cardiovasculaire indépendant de l'AP. Conseiller pauses actives toutes les 30 min." });
-    if (a.fruits === "Rarement ou jamais" || a.fruits === "Oui, 1 à 2 portions") items.push({ theme: "Activité physique & alimentation", priority: false, label: "Apports F&L insuffisants", detail: "PNNS 5/jour. Évoquer alimentation méditerranéenne. Multivitamines possibles à court terme." });
-    if (a.tabac_45 === "Oui, je fume") items.push({ theme: "Activité physique & alimentation", priority: true, label: "Sevrage tabagique", detail: "Risque cardiovasculaire majeur à 45 ans. Substituts en combinaison (patch + formes orales). Prescription pharmacien possible. Suivi mensuel." });
-    // NOUVEAUX
-    if (a.essouffle === "Oui, un peu" || a.essouffle === "Oui, nettement") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Dyspnée d'effort", detail: "À explorer — surtout si tabagisme. Orienter médecin traitant pour bilan : ECG, spirométrie, DLCO selon contexte. Évaluer FdR cardiovasculaires." });
-    if (a.sommeil_45 === "Oui, souvent" || a.sommeil_45 === "Je prends des somnifères") items.push({ theme: "Sommeil & bien-être mental", priority: false, label: "Troubles du sommeil", detail: "Hygiène de sommeil. Si BZD chroniques après 50 ans : risque cognitif et chutes. Sevrage progressif accompagné à proposer (-25% par paliers de 2 semaines). Magnésium, mélatonine 1mg en alternative." });
-    if (a.anxiete_45 === "Plus de 7 jours" || a.anxiete_45 === "Presque tous les jours" || a.tristesse_45 === "Plus de 7 jours" || a.tristesse_45 === "Presque tous les jours") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Symptômes anxio-dépressifs", detail: "GAD-2/PHQ-2 positif. Orienter médecin traitant. Magnésium bisglycinate, rhodiola/ashwagandha en attendant. Évaluer IS systématiquement." });
-    if (a.violences_45 === "Oui") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Antécédent de violences", detail: "Entretien confidentiel. Orienter 3919, médecin traitant, association locale. Documenter si demande de certificat." });
+    if (a.dtp_45 === "Non" || a.dtp_45 === "Je ne sais pas") items.push({ theme: "Vaccination", priority: true, label: "Rappel DTP à 45 ans", detail: "Repevax® ou Boostrixtetra®. Administration officine sans ordonnance." });
+    if (a.coqueluche_45 === "Non" || a.coqueluche_45 === "Je ne sais pas") items.push({ theme: "Vaccination", priority: true, label: "Rappel coqueluche", detail: "Boostrixtetra® (combiné DTP-coqueluche). Important si contact nourrissons ou profession santé." });
+    if (a.grippe_45 === "Oui mais non vacciné(e)") items.push({ theme: "Vaccination", priority: true, label: "Vaccin grippe", detail: "Patient avec comorbidité non vacciné. Vaxigrip Tetra®, Influvac Tetra®. Remboursé." });
+    if (a.covid_45 === "Non, à risque") items.push({ theme: "Vaccination", priority: true, label: "Rappel Covid", detail: "Patient à risque sans rappel. Comirnaty® ou Spikevax®. Coadministrable grippe." });
+    if (a.colorectal === "Non, jamais" || a.colorectal === "Oui, il y a longtemps" || a.colorectal === "Je ne sais pas") items.push({ theme: "Dépistages & mode de vie", priority: true, label: "Kit dépistage colorectal", detail: "Patient éligible dès 50 ans. Kit immunologique au comptoir avec explications. Sans ordonnance." });
+    if ((a.sein === "Non, jamais" || a.sein === "Oui, il y a longtemps") && sexe === "Une femme") items.push({ theme: "Dépistages & mode de vie", priority: true, label: "Mammographie", detail: "Dépistage organisé non réalisé. Orienter CPAM ou médecin traitant. 100% pris en charge." });
+    if ((a.col === "Non, jamais" || a.col === "Oui, il y a plus de 5 ans") && sexe === "Une femme") items.push({ theme: "Dépistages & mode de vie", priority: false, label: "Frottis cervical", detail: "Dépistage en retard. Orienter médecin/gynécologue/sage-femme. Tous les 5 ans entre 25 et 65 ans." });
+    if (a.activite === "Jamais" || a.activite === "1 à 2 fois") items.push({ theme: "Dépistages & mode de vie", priority: false, label: "Activité physique insuffisante", detail: "OMS : 150 min/sem + 2 séances renforcement. Conseils hygiéno-diététiques." });
+    if (a.fruits === "Rarement ou jamais" || a.fruits === "Oui, 1 à 2 portions") items.push({ theme: "Dépistages & mode de vie", priority: false, label: "Apports F&L insuffisants", detail: "PNNS 5/jour. Alimentation méditerranéenne." });
+    if (a.tabac_45 === "Oui, je fume") items.push({ theme: "Dépistages & mode de vie", priority: true, label: "Sevrage tabagique", detail: "Risque cardiovasculaire majeur à 45 ans. Substituts en combinaison. Prescription pharmacien possible." });
+    if (a.essouffle === "Oui, un peu" || a.essouffle === "Oui, nettement") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Dyspnée d'effort", detail: "À explorer. Orienter médecin traitant : ECG, spirométrie, DLCO. Évaluer FdR cardiovasculaires." });
+    if (a.sommeil_45 === "Oui, souvent" || a.sommeil_45 === "Je prends des somnifères") items.push({ theme: "Sommeil & bien-être mental", priority: false, label: "Troubles du sommeil", detail: "Si BZD chronique après 50 ans : risque cognitif et chutes. Sevrage progressif accompagné. Magnésium, mélatonine en alternative." });
+    if (a.anxiete_45 === "Plus de 7 jours" || a.anxiete_45 === "Presque tous les jours" || a.tristesse_45 === "Plus de 7 jours" || a.tristesse_45 === "Presque tous les jours") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Symptômes anxio-dépressifs", detail: "GAD-2/PHQ-2 positif. Orienter médecin traitant. Évaluer IS systématiquement." });
+    if (a.violences_45 === "Oui") items.push({ theme: "Sommeil & bien-être mental", priority: true, label: "Antécédent de violences", detail: "Entretien confidentiel. 3919, médecin traitant, association locale. Documenter si certificat demandé." });
   }
   if (age === "60-65") {
-    if (a.grippe !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Vaccination grippe — À réaliser", detail: "Patient 60+ non vacciné. Administration officine sans ordonnance (Influvac Tetra®, Vaxigrip Tetra®, Efluelda® si 65+). Remboursée 100%." });
-    if (a.covid !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Rappel Covid-19 — À réaliser", detail: "Rappel non effectué. Officine. Coadministration grippe possible (sites différents). Comirnaty® ou Spikevax®." });
-    if (a.zona !== "Oui, les 2 injections") items.push({ theme: "Vaccination", priority: true, label: a.zona === "Oui, seulement la 1ère injection" ? "Zona Shingrix® — 2ème dose" : "Zona Shingrix® — Schéma à initier", detail: a.zona === "Oui, seulement la 1ère injection" ? "1ère dose effectuée. 2ème dose à 2-6 mois. Schéma incomplet = protection insuffisante." : "Schéma 2 doses (J0 et M2-6). Protection >90%. Remboursé pour 65+." });
-    if (a.pneumo !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Pneumocoque Prevenar 20®", detail: "Non vacciné. 1 injection à vie après 65 ans. Coadministrable grippe. Remboursé sur prescription." });
-    if (a.dtp_60 === "Non ou je ne sais pas") items.push({ theme: "Vaccination", priority: false, label: "Rappel DTP", detail: "Tous les 10 ans après 65 ans. Vérifier carnet. Administration officine si nécessaire." });
+    if (a.grippe !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Vaccin grippe", detail: "Patient 60+ non vacciné. Influvac Tetra®, Vaxigrip Tetra®, Efluelda® (65+). Remboursé 100%." });
+    if (a.covid !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Rappel Covid-19", detail: "Coadministration grippe possible. Comirnaty® ou Spikevax®." });
+    if (a.zona !== "Oui, les 2 injections") items.push({ theme: "Vaccination", priority: true, label: a.zona === "Oui, seulement la 1ère" ? "Zona Shingrix® — 2ème dose" : "Zona Shingrix® — À initier", detail: a.zona === "Oui, seulement la 1ère" ? "1ère dose effectuée. 2ème dose à 2-6 mois. Schéma incomplet = protection insuffisante." : "Schéma 2 doses (J0 et M2-6). Protection >90%. Remboursé pour 65+." });
+    if (a.pneumo !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Pneumocoque Prevenar 20®", detail: "1 injection à vie après 65 ans. Coadministrable grippe. Remboursé sur prescription." });
+    if (a.dtp_60 === "Non ou je ne sais pas") items.push({ theme: "Vaccination", priority: false, label: "Rappel DTP", detail: "Tous les 10 ans après 65 ans. Vérifier carnet. Administration officine." });
+    if (a.rsv_60 === "Non" || a.rsv_60 === "Je ne sais pas ce que c'est") items.push({ theme: "Vaccination", priority: true, label: "VRS Abrysvo® ou Arexvy®", detail: "Recommandation HAS 2024. Une injection. Prévention bronchiolites graves seniors. Coadministrable autres vaccins." });
     if (a.colorectal_60 === "Non, jamais" || a.colorectal_60 === "Oui, il y a longtemps" || a.colorectal_60 === "Je ne sais pas") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Kit dépistage colorectal", detail: "Patient éligible. Remise immédiate au comptoir. Sans ordonnance." });
-    if ((a.mammo_60 === "Non, jamais" || a.mammo_60 === "Oui, il y a longtemps") && sexe === "Une femme") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Mammographie — À orienter", detail: "Dépistage en retard. Orienter CPAM ou médecin traitant. Tous les 2 ans jusqu'à 74 ans." });
-    if (a.medicaments_60 === "5 à 6 médicaments" || a.medicaments_60 === "7 ou plus") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Polymédication — Bilan partagé", detail: `${a.medicaments_60} déclarés. Patient éligible BPM (65+, 5+ médicaments chroniques). Analyse interactions, vérification médicaments inappropriés (Beers/Laroche), déprescription si pertinente.` });
-    if (a.effets === "Oui, assez souvent" || a.effets === "Oui, et cela me préoccupe") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Effets indésirables", detail: "Effets gênants déclarés. Évaluer nature, fréquence, médicament suspect. Pharmacovigilance si nécessaire. Orienter médecin." });
+    if ((a.mammo_60 === "Non, jamais" || a.mammo_60 === "Oui, il y a longtemps") && sexe === "Une femme") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Mammographie", detail: "Dépistage en retard. Orienter CPAM ou médecin traitant. Tous les 2 ans jusqu'à 74 ans." });
+    if (a.medicaments_60 === "5 à 6 médicaments" || a.medicaments_60 === "7 ou plus") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Polymédication — BPM", detail: `${a.medicaments_60}. Patient éligible BPM (65+, 5+ médicaments chroniques). Analyse interactions, médicaments inappropriés (Beers/Laroche), déprescription.` });
+    if (a.effets === "Oui, assez souvent" || a.effets === "Oui, et cela me préoccupe") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Effets indésirables", detail: "Évaluer nature, fréquence, médicament suspect. Pharmacovigilance. Orienter médecin." });
     if (a.chutes_60 && a.chutes_60 !== "Non") items.push({ theme: "Dépistages & médicaments", priority: true, label: "Chute — Évaluation", detail: `${a.chutes_60}. Vérifier traitements à risque (BZD, antihypertenseurs, hypoglycémiants). Doser vit D. Orienter kiné.` });
-    // NOUVEAUX
-    if (a.activite_60 === "Jamais" || a.activite_60 === "1 à 2 fois") items.push({ theme: "Mode de vie & bien-être", priority: false, label: "Activité physique insuffisante", detail: "OMS : 150 min/semaine modérée. Recommander marche, renforcement musculaire 2×/sem (sarcopénie). APA possible sur prescription si pathologie chronique." });
-    if (a.fruits_60 === "De temps en temps" || a.fruits_60 === "Rarement ou jamais") items.push({ theme: "Mode de vie & bien-être", priority: false, label: "Apports alimentaires à renforcer", detail: "Surveiller apports protéiques (1-1,2 g/kg/j après 60 ans), calcium, vit D. Évaluer dénutrition (MNA si pertinent). Orienter diététicien si besoin." });
-    if (a.memoire_60 === "Oui, et cela me préoccupe") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Plainte mnésique", detail: "Plainte significative. Orienter médecin traitant pour bilan : MMSE, B12, TSH, vit D. Vérifier traitements anticholinergiques, BZD. Consultation mémoire si besoin." });
-    if (a.sommeil_60 === "Je prends des somnifères") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "BZD au long cours", detail: "Risques majorés après 60 ans : chutes, troubles cognitifs, dépendance. Sevrage progressif accompagné (-25% par paliers de 2 sem). Mélatonine 2mg LP en relais possible." });
-    if (a.moral_60 === "Plus de 7 jours" || a.moral_60 === "Presque tous les jours") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Symptômes dépressifs", detail: "Particulièrement à dépister à l'approche/début retraite. Orienter médecin traitant. Doser vit D. Évaluer IS." });
+    if (a.activite_60 === "Jamais" || a.activite_60 === "1 à 2 fois") items.push({ theme: "Mode de vie & bien-être", priority: false, label: "Activité physique insuffisante", detail: "OMS 150 min/sem. Renforcement musculaire 2x/sem (sarcopénie). APA possible sur prescription." });
+    if (a.fruits_60 === "De temps en temps" || a.fruits_60 === "Rarement ou jamais") items.push({ theme: "Mode de vie & bien-être", priority: false, label: "Apports alimentaires", detail: "Protéines 1-1,2 g/kg/j après 60 ans. Calcium, vit D. Évaluer dénutrition. Orienter diététicien." });
+    if (a.memoire_60 === "Oui, et cela me préoccupe") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Plainte mnésique", detail: "Orienter médecin traitant : MMSE, B12, TSH, vit D. Vérifier anticholinergiques, BZD." });
+    if (a.sommeil_60 === "Je prends des somnifères") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "BZD au long cours", detail: "Risques majorés après 60 ans : chutes, troubles cognitifs. Sevrage progressif (-25% / 2 sem). Mélatonine LP 2mg en relais." });
+    if (a.moral_60 === "Plus de 7 jours" || a.moral_60 === "Presque tous les jours") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Symptômes dépressifs", detail: "À dépister à l'approche/début retraite. Orienter médecin. Doser vit D. Évaluer IS." });
   }
   if (age === "70-75") {
-    if (a.grippe_70 !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Grippe — Prioritaire", detail: "Patient 70+ non vacciné. Vaccin haute dose Efluelda® recommandé. Administration officine sans ordonnance. Remboursée 100%." });
-    if (a.covid_70 !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Rappel Covid-19", detail: "Rappel non effectué. Officine. Coadministration grippe possible. Très important après 70 ans." });
-    if (a.zona_70 !== "Oui, les 2 injections") items.push({ theme: "Vaccination", priority: true, label: a.zona_70 === "Oui, seulement la 1ère injection" ? "Zona Shingrix® — 2ème dose" : "Zona Shingrix® — À initier", detail: a.zona_70 === "Oui, seulement la 1ère injection" ? "2ème dose à 2-6 mois. Schéma incomplet." : "Schéma 2 doses. Séquelles neurologiques fréquentes sans vaccination après 70 ans. Très fortement recommandé." });
-    if (a.pneumo_70 !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Pneumocoque Prevenar 20®", detail: "Non vacciné. 1 injection à vie. 2ème cause d'hospitalisation hivernale après 70 ans. Coadministrable grippe." });
+    if (a.grippe_70 !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Grippe — Prioritaire", detail: "Vaccin haute dose Efluelda® recommandé. Administration officine sans ordonnance. Remboursée 100%." });
+    if (a.covid_70 !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Rappel Covid-19", detail: "Coadministration grippe. Très important après 70 ans." });
+    if (a.zona_70 !== "Oui, les 2 injections") items.push({ theme: "Vaccination", priority: true, label: a.zona_70 === "Oui, seulement la 1ère" ? "Zona Shingrix® — 2ème dose" : "Zona Shingrix® — À initier", detail: a.zona_70 === "Oui, seulement la 1ère" ? "2ème dose à 2-6 mois. Schéma incomplet." : "Schéma 2 doses. Séquelles neurologiques fréquentes sans vaccination. Très fortement recommandé." });
+    if (a.pneumo_70 !== "Oui") items.push({ theme: "Vaccination", priority: true, label: "Pneumocoque Prevenar 20®", detail: "1 injection à vie. 2ème cause d'hospitalisation hivernale. Coadministrable grippe." });
     if (a.dtp_70 === "Non ou je ne sais pas") items.push({ theme: "Vaccination", priority: false, label: "Rappel DTP", detail: "Tous les 10 ans. Vérifier carnet et administrer si nécessaire." });
-    if (a.colorectal_70 === "Non, jamais" || a.colorectal_70 === "Oui, il y a longtemps" || a.colorectal_70 === "Je ne sais pas") items.push({ theme: "Médicaments & autonomie", priority: true, label: "Kit dépistage colorectal", detail: "Recommandé jusqu'à 74 ans. Kit immunologique au comptoir, sans ordonnance." });
+    if (a.rsv_70 === "Non" || a.rsv_70 === "Je ne sais pas ce que c'est") items.push({ theme: "Vaccination", priority: true, label: "VRS Abrysvo® ou Arexvy®", detail: "Recommandation HAS 2024. Très important après 70 ans (formes graves de bronchiolite). Une injection. Coadministrable autres vaccins." });
+    if (a.coqueluche_70 === "Non" || a.coqueluche_70 === "Je ne sais pas") items.push({ theme: "Vaccination", priority: false, label: "Rappel coqueluche", detail: "Boostrixtetra®. Important si contact petits-enfants (stratégie cocoon)." });
     const manyMeds = a.medicaments_70 === "5 à 6 médicaments" || a.medicaments_70 === "7 à 9 médicaments" || a.medicaments_70 === "10 ou plus";
-    if (manyMeds) items.push({ theme: "Médicaments & autonomie", priority: true, label: "Polymédication — BPM fortement recommandé", detail: `${a.medicaments_70} déclarés. Vérifier médicaments inappropriés après 70 ans : BZD longue durée, anticholinergiques, AINS au long cours. Évaluer cascade médicamenteuse. Déprescription à envisager.` });
-    if (a.observance === "Parfois (1 fois/semaine)" || a.observance === "Souvent") items.push({ theme: "Médicaments & autonomie", priority: true, label: "Observance — PDA à proposer", detail: "Oublis fréquents impactant efficacité thérapeutique. Service Préparation des Doses à Administrer à proposer." });
-    if (a.chutes_70 && a.chutes_70 !== "Non") items.push({ theme: "Médicaments & autonomie", priority: true, label: "Chute — Évaluation prioritaire", detail: `${a.chutes_70}. Vérifier traitements à risque (BZD, antihypertenseurs, hypoglycémiants, anticholinergiques). Vit D 1000 UI/j systématique. Orienter kiné (équilibre).` });
-    if (a.autonomie && a.autonomie !== "Non, aucune difficulté") items.push({ theme: "Médicaments & autonomie", priority: false, label: "Perte d'autonomie", detail: `${a.autonomie}. Informer APA, aide à domicile, livraison médicaments, portage repas. Orienter CCAS local.` });
-    // NOUVEAUX
-    if (a.activite_70 === "Jamais" || a.activite_70 === "1 à 2 fois") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Sédentarité — Risque sarcopénie/chutes", detail: "Activité insuffisante. APA sur prescription si ALD. Kiné équilibre/renforcement. Programme PIED (Programme intégré d'équilibre dynamique) si disponible localement." });
-    if (a.fruits_70 === "De temps en temps" || a.fruits_70 === "Rarement ou jamais") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Risque dénutrition", detail: "Apports F&L insuffisants. Évaluer dénutrition : poids, IMC, MNA. Renforcer apports protéiques (1,2 g/kg/j), CNO si pertinent. Vit D systématique 1000 UI/j." });
-    if (a.logement_70 === "En partie" || a.logement_70 === "Non, pas vraiment" || a.logement_70 === "Je ne sais pas") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Logement non sécurisé", detail: "Facteur de risque chute majeur. Orienter Soliha, ANAH, caisse de retraite (financement adaptations : barres, douche italienne, monte-escalier). Ergothérapeute si évaluation à domicile pertinente." });
-    if (a.memoire_70 === "Oui, et cela me préoccupe") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Plainte mnésique", detail: "Orienter médecin traitant pour bilan : MMSE, MoCA, B12, TSH, vit D, iono. Vérifier anticholinergiques, BZD. Consultation mémoire si plainte significative." });
-    if (a.moral_70 === "Plus de 7 jours" || a.moral_70 === "Presque tous les jours") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Symptômes dépressifs", detail: "Dépression sous-diagnostiquée chez le sujet âgé. Orienter médecin traitant. Doser vit D. Évaluer iatrogénie (BZD, opioïdes). Évaluer IS systématiquement." });
+    if (manyMeds) items.push({ theme: "Médicaments & autonomie", priority: true, label: "Polymédication — BPM fortement recommandé", detail: `${a.medicaments_70}. Vérifier médicaments inappropriés après 70 ans : BZD, anticholinergiques, AINS chroniques. Cascade médicamenteuse. Déprescription.` });
+    if (a.observance === "Parfois (1 fois/semaine)" || a.observance === "Souvent") items.push({ theme: "Médicaments & autonomie", priority: true, label: "Observance — PDA à proposer", detail: "Oublis impactant efficacité. Service Préparation Doses à Administrer." });
+    if (a.effets_70 === "Oui, assez souvent" || a.effets_70 === "Oui, et cela me préoccupe") items.push({ theme: "Médicaments & autonomie", priority: true, label: "Effets indésirables", detail: "Évaluer nature, fréquence, médicament suspect. Pharmacovigilance. Orienter médecin." });
+    if (a.chutes_70 && a.chutes_70 !== "Non") items.push({ theme: "Médicaments & autonomie", priority: true, label: "Chute — Évaluation prioritaire", detail: `${a.chutes_70}. Vérifier traitements à risque. Vit D 1000 UI/j systématique. Kiné équilibre.` });
+    if (a.autonomie && a.autonomie !== "Non, aucune difficulté") items.push({ theme: "Médicaments & autonomie", priority: false, label: "Perte d'autonomie", detail: `${a.autonomie}. Informer APA, aide à domicile, livraison médicaments. Orienter CCAS.` });
+    if (a.activite_70 === "Jamais" || a.activite_70 === "1 à 2 fois") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Sédentarité — Risque sarcopénie/chutes", detail: "APA sur prescription si ALD. Kiné équilibre/renforcement. Programme PIED si disponible." });
+    if (a.fruits_70 === "De temps en temps" || a.fruits_70 === "Rarement ou jamais") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Risque dénutrition", detail: "Évaluer dénutrition (poids, IMC, MNA). Protéines 1,2 g/kg/j, CNO si pertinent. Vit D 1000 UI/j." });
+    if (a.logement_70 === "En partie" || a.logement_70 === "Non, pas vraiment" || a.logement_70 === "Je ne sais pas") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Logement non sécurisé", detail: "Soliha, ANAH, caisse de retraite (financement adaptations). Ergothérapeute à domicile pertinent." });
+    if (a.memoire_70 === "Oui, et cela me préoccupe") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Plainte mnésique", detail: "MMSE, MoCA, B12, TSH, vit D, iono. Vérifier anticholinergiques, BZD. Consultation mémoire si significative." });
+    if (a.moral_70 === "Plus de 7 jours" || a.moral_70 === "Presque tous les jours") items.push({ theme: "Mode de vie & bien-être", priority: true, label: "Symptômes dépressifs", detail: "Dépression sous-diagnostiquée chez sujet âgé. Doser vit D. Évaluer iatrogénie. IS systématiquement." });
   }
-  if (items.length === 0) items.push({ theme: "Bilan", priority: false, label: "Aucune action particulière identifiée", detail: "Bilan globalement rassurant. Maintenir vigilance sur les dépistages organisés et la mise à jour vaccinale." });
+  if (items.length === 0) items.push({ theme: "Bilan", priority: false, label: "Aucune action particulière", detail: "Bilan globalement rassurant. Maintenir vigilance dépistages organisés et mise à jour vaccinale." });
   return items;
-}
-
-// ═══════════════════════════════════════════════════════════
-// PDF — 2 pages
-// ═══════════════════════════════════════════════════════════
-function generatePDFContent(data) {
-  const { prenom, nom, dateNaissance, sexe, ageGroup, answers, refNumber, dateStr, timeStr, themes, recos, priorityRecos } = data;
-  const synthese = (() => {
-    const parTheme = {};
-    recos.forEach(r => { parTheme[r.theme] = (parTheme[r.theme] || 0) + 1; });
-    const parts = Object.entries(parTheme).map(([t, n]) => `${n} action${n > 1 ? "s" : ""} en ${t.toLowerCase()}`);
-    return parts.length === 0 ? "Aucune action particulière identifiée." : `Patient présentant ${parts.join(", ")}.`;
-  })();
-
-  return `
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Bilan Prévention - ${refNumber}</title>
-<style>
-@page { size: A4; margin: 16mm; }
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica', 'Arial', sans-serif; }
-body { color: #1E1E1E; font-size: 10pt; line-height: 1.5; }
-.page { min-height: calc(297mm - 32mm); display: flex; flex-direction: column; page-break-after: always; }
-.page:last-child { page-break-after: auto; }
-.hdr { border-bottom: 2px solid #1A3A52; padding-bottom: 10px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-start; }
-.hdr-left h1 { font-size: 17pt; color: #1A3A52; font-family: 'Georgia', serif; margin-bottom: 2px; font-weight: 700; }
-.hdr-left .sub { font-size: 9pt; color: #6B7A8D; }
-.hdr-pharma { font-size: 9pt; color: #1A3A52; font-weight: bold; margin-top: 4px; }
-.hdr-pharma small { font-weight: normal; color: #6B7A8D; }
-.hdr-right { font-size: 9pt; color: #1A3A52; text-align: right; line-height: 1.6; }
-.hdr-right .ref { font-weight: bold; }
-.section { margin-bottom: 12px; }
-.section-title { font-size: 9pt; font-weight: bold; color: #5A8A6A; text-transform: uppercase; letter-spacing: 1.2px; padding-bottom: 3px; border-bottom: 1px solid #E4E0D8; margin-bottom: 7px; }
-.identity { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; padding: 10px 12px; background: #F8F7F3; border-radius: 4px; }
-.field { display: flex; gap: 8px; align-items: baseline; font-size: 10pt; }
-.field-label { font-size: 8.5pt; color: #6B7A8D; text-transform: uppercase; letter-spacing: 0.5px; min-width: 90px; }
-.field-value { font-weight: bold; color: #1A3A52; }
-.field-empty { border-bottom: 1px dotted #6B7A8D; flex: 1; min-height: 14px; padding-left: 4px; }
-.themes { padding: 8px 12px; background: #EAF2EC; border-left: 3px solid #5A8A6A; border-radius: 4px; }
-.theme-line { font-size: 10pt; color: #1A3A52; margin: 2px 0; }
-.synthese { padding: 10px 12px; background: #FDF4E3; border-left: 3px solid #C8922A; border-radius: 4px; font-size: 10pt; color: #1A3A52; font-style: italic; }
-.spacer { flex: 1; }
-.signature { margin-top: 14px; padding-top: 10px; border-top: 1px solid #E4E0D8; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.sig-box { border: 1px solid #E4E0D8; padding: 10px; border-radius: 4px; min-height: 70px; }
-.sig-title { font-size: 8.5pt; color: #6B7A8D; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
-.signed { font-size: 9pt; color: #5A8A6A; font-weight: bold; }
-.signed-info { font-size: 9pt; color: #6B7A8D; margin-top: 3px; line-height: 1.4; }
-.lieu-date { font-size: 9pt; color: #1A3A52; text-align: right; margin-bottom: 6px; }
-.legal { margin-top: 10px; padding: 6px 10px; background: #F8F7F3; border-radius: 4px; font-size: 8pt; color: #6B7A8D; text-align: center; line-height: 1.5; }
-.footer { margin-top: 8px; font-size: 7.5pt; color: #6B7A8D; text-align: center; padding-top: 6px; border-top: 1px solid #E4E0D8; }
-.reco { padding: 8px 10px; border: 1px solid #E4E0D8; margin-bottom: 5px; border-radius: 4px; page-break-inside: avoid; }
-.reco-priority { font-size: 7.5pt; font-weight: bold; padding: 1px 5px; border-radius: 3px; display: inline-block; margin-right: 6px; }
-.priority-high { background: #EAF2EC; color: #5A8A6A; }
-.priority-low { background: #FDF4E3; color: #C8922A; }
-.reco-theme { font-size: 7.5pt; color: #6B7A8D; }
-.reco-label { font-weight: bold; color: #1A3A52; margin-top: 3px; font-size: 9.5pt; }
-.reco-detail { font-size: 8.5pt; color: #6B7A8D; margin-top: 2px; line-height: 1.45; }
-.ppp { padding: 9px 11px; background: #FAFAF7; border: 1px solid #E4E0D8; border-radius: 4px; page-break-inside: avoid; font-size: 9pt; }
-.ppp-line { margin: 3px 0; }
-.ppp-label { font-size: 8pt; color: #6B7A8D; text-transform: uppercase; font-weight: 600; }
-.qa { display: flex; padding: 4px 0; border-bottom: 1px solid #F0EDE5; font-size: 8.5pt; }
-.qa-q { flex: 1; color: #6B7A8D; padding-right: 10px; }
-.qa-a { font-weight: bold; color: #1A3A52; max-width: 38%; text-align: right; }
-.page-num { position: relative; margin-top: 10px; font-size: 8pt; color: #6B7A8D; text-align: right; }
-@media print { body { padding: 0; } }
-</style></head>
-<body>
-
-<!-- ═══════════ PAGE 1 — IDENTITÉ + THÈMES + SIGNATURE ═══════════ -->
-<div class="page">
-  <div class="hdr">
-    <div class="hdr-left">
-      <h1>Bilan de Prévention</h1>
-      <div class="sub">Tranche d'âge : ${ageGroup} ans</div>
-      <div class="hdr-pharma">${PHARMACY.name}<br><small>${PHARMACY.address} · Tel : ${PHARMACY.phone}</small></div>
-    </div>
-    <div class="hdr-right">
-      <div class="ref">N° ${refNumber}</div>
-      <div>Date du bilan</div>
-      <div>${dateStr}</div>
-      <div>${timeStr}</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Identité du patient</div>
-    <div class="identity">
-      <div class="field"><span class="field-label">Nom</span><span class="field-value">${nom.toUpperCase()}</span></div>
-      <div class="field"><span class="field-label">Prénom</span><span class="field-value">${prenom}</span></div>
-      <div class="field"><span class="field-label">Né(e) le</span><span class="field-value">${dateNaissance}</span></div>
-      <div class="field"><span class="field-label">Sexe</span><span class="field-value">${sexe}</span></div>
-      <div class="field" style="grid-column: span 2;">
-        <span class="field-label">N° Sécu</span><span class="field-empty"></span>
-      </div>
-      <div class="field" style="grid-column: span 2;">
-        <span class="field-label">Médecin traitant</span><span class="field-empty"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Thèmes abordés (Bilan ${ageGroup} ans)</div>
-    <div class="themes">
-      ${themes.map((t, i) => `<div class="theme-line">✓ Thème ${i + 1} : ${t}</div>`).join("")}
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Synthèse</div>
-    <div class="synthese">${synthese}</div>
-  </div>
-
-  <div class="spacer"></div>
-
-  <div class="lieu-date">Fait à ${PHARMACY.city}, le ${dateStr}</div>
-
-  <div class="signature">
-    <div class="sig-box">
-      <div class="sig-title">Consentement patient</div>
-      <div class="signed">✓ Confirmé électroniquement</div>
-      <div class="signed-info">${prenom} ${nom.toUpperCase()}<br>${dateStr} à ${timeStr}</div>
-    </div>
-    <div class="sig-box">
-      <div class="sig-title">Cachet de la pharmacie</div>
-    </div>
-  </div>
-
-  <div class="legal">
-    Document conforme au dispositif « Mon Bilan Prévention » — Arrêté du 28 mai 2024.<br>
-    Bilan réalisé en officine · À archiver dans le dossier patient.
-  </div>
-
-  <div class="footer">
-    ${PHARMACY.name} · Référence ${refNumber} · Page 1/2
-  </div>
-</div>
-
-<!-- ═══════════ PAGE 2 — RECOMMANDATIONS + PPP + RÉPONSES ═══════════ -->
-<div class="page">
-  <div class="hdr">
-    <div class="hdr-left">
-      <h1>Recommandations cliniques</h1>
-      <div class="sub">${prenom} ${nom.toUpperCase()} · ${dateNaissance}</div>
-    </div>
-    <div class="hdr-right">
-      <div class="ref">N° ${refNumber}</div>
-      <div>${dateStr}</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Actions recommandées au patient</div>
-    ${recos.length === 0 ? `<div style="font-size: 9pt; color: #6B7A8D; padding: 8px;">Aucune recommandation particulière identifiée.</div>` : recos.map(r => `
-      <div class="reco">
-        <span class="reco-priority ${r.priority ? "priority-high" : "priority-low"}">${r.priority ? "PRIORITAIRE" : "À PROPOSER"}</span>
-        <span class="reco-theme">${r.theme}</span>
-        <div class="reco-label">${r.label}</div>
-        <div class="reco-detail">${r.detail}</div>
-      </div>
-    `).join("")}
-  </div>
-
-  <div class="section">
-    <div class="section-title">Plan Personnalisé de Prévention (PPP)</div>
-    <div class="ppp">
-      <div class="ppp-line"><span class="ppp-label">Thèmes abordés :</span> ${themes.join(", ")}</div>
-      <div class="ppp-line" style="margin-top: 5px;">
-        <span class="ppp-label">Actions prioritaires identifiées :</span><br>
-        ${priorityRecos.length === 0 ? "Aucune action prioritaire identifiée." : priorityRecos.map(r => `• ${r.label}`).join("<br>")}
-      </div>
-      <div class="ppp-line" style="margin-top: 5px;">
-        <span class="ppp-label">Objectifs retenus avec le patient :</span> Basés sur les recommandations ci-dessus, à formaliser au comptoir.
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Réponses du patient</div>
-    ${getQuestionsForSexe(ageGroup, sexe).map(q => `
-      <div class="qa"><div class="qa-q">${q.q}</div><div class="qa-a">${answers[q.id] || "—"}</div></div>
-    `).join("")}
-  </div>
-
-  <div class="spacer"></div>
-
-  <div class="legal">
-    Document conforme au dispositif « Mon Bilan Prévention » — Arrêté du 28 mai 2024.
-  </div>
-
-  <div class="footer">
-    ${PHARMACY.name} · Référence ${refNumber} · Page 2/2
-  </div>
-</div>
-
-</body></html>`;
-}
-
-function downloadPDF(data) {
-  const html = generatePDFContent(data);
-  const w = window.open("", "_blank");
-  if (!w) return alert("Veuillez autoriser les pop-ups pour télécharger le document.");
-  w.document.write(html);
-  w.document.close();
-  setTimeout(() => w.print(), 500);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -582,7 +389,6 @@ function ChoiceBtn({ label, onClick }) {
   );
 }
 
-// ─── SCREENS ──────────────────────────────────────────────
 function Welcome({ onStart }) {
   return (
     <div className="fade" style={{ paddingTop: 12 }}>
@@ -609,7 +415,6 @@ function Welcome({ onStart }) {
   );
 }
 
-// ─── ÉTAPE IDENTITÉ (nom + prénom + date naissance sur 1 page) ─
 function StepIdentite({ initial, onNext, onBack }) {
   const [nom, setNom] = useState(initial.nom || "");
   const [prenom, setPrenom] = useState(initial.prenom || "");
@@ -781,14 +586,12 @@ function Sending() {
   );
 }
 
+// ═══════════════════════════════════════════════════════════
+// RÉSULTATS — Conseils SEULEMENT, pas de PDF, pas d'historique
+// ═══════════════════════════════════════════════════════════
 function Results({ data }) {
-  const { prenom, nom, ageGroup, sexe, dateNaissance, answers, refNumber, dateStr, timeStr } = data;
+  const { prenom, ageGroup, sexe, answers, refNumber, dateStr, timeStr } = data;
   const tips = getPatientAdvice(ageGroup, answers, sexe, prenom);
-  const recos = getPharmacistReco(ageGroup, answers, sexe);
-  const themes = [...new Set(getQuestionsForSexe(ageGroup, sexe).map(q => q.theme))];
-  const priorityRecos = recos.filter(r => r.priority);
-
-  const fullData = { ...data, themes, recos, priorityRecos };
 
   return (
     <div className="fade" style={{ paddingTop: 12 }}>
@@ -798,8 +601,7 @@ function Results({ data }) {
         <div style={{ width: 60, height: 60, margin: "0 auto 14px", borderRadius: "50%", background: C.sageLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>✓</div>
         <h1 style={{ fontFamily: F.display, fontSize: 26, fontWeight: 700, color: C.navy, margin: "0 0 6px", lineHeight: 1.1 }}>Merci, {prenom} !</h1>
         <p style={{ color: C.muted, fontSize: 13, margin: 0, lineHeight: 1.6 }}>
-          Votre bilan a été transmis à votre pharmacie.<br />
-          <span style={{ fontSize: 11, color: C.muted }}>Référence : <strong style={{ color: C.navy }}>{refNumber}</strong></span>
+          Votre bilan a été transmis à votre pharmacie.
         </p>
       </div>
 
@@ -822,11 +624,6 @@ function Results({ data }) {
         </div>
       </div>
 
-      <button onClick={() => downloadPDF(fullData)}
-        style={{ width: "100%", padding: "14px", background: C.sage, color: "#fff", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: F.body, cursor: "pointer", transition: "all 0.2s", marginBottom: 10 }}>
-        📄 Télécharger mon compte-rendu (PDF)
-      </button>
-
       <div style={{ padding: "12px 14px", background: C.goldLight, border: `1px solid #E8C97A`, borderRadius: 11, textAlign: "center" }}>
         <p style={{ margin: 0, fontSize: 12, color: C.navy, lineHeight: 1.55 }}>
           Votre équipe de pharmacie a reçu votre bilan et sera disponible pour vous lors de votre prochain passage.
@@ -838,7 +635,7 @@ function Results({ data }) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// ROOT
+// ROOT — Envoi à /api/send-mail avec tous les data dérivés
 // ═══════════════════════════════════════════════════════════
 export default function App() {
   const [step, setStep] = useState("welcome");
@@ -852,7 +649,6 @@ export default function App() {
     const timeStr = now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
     const refNumber = generateRefNumber();
 
-    // Calcul des données dérivées (mêmes utilisées dans Results)
     const tips = getPatientAdvice(identite.ageGroup, ans, sexe, identite.prenom);
     const recos = getPharmacistReco(identite.ageGroup, ans, sexe);
     const questionsLib = getQuestionsForSexe(identite.ageGroup, sexe);
@@ -867,7 +663,6 @@ export default function App() {
     setSubmitData(payload);
     setStep("sending");
 
-    // Envoi à l'API mail (non bloquant pour l'UX)
     try {
       const res = await fetch("/api/send-mail", {
         method: "POST",
